@@ -490,10 +490,10 @@ describe('UnifiedDataTable', () => {
       screen.getByTestId(`dataGridHeaderCellActionButton-${name}`);
     const getCellValuesByColumn = () => {
       const columns = screen
-        .getAllByRole('columnheader')
+        .getAllByTestId(/dataGridHeaderCell-/)
         .map((header) => header.dataset.gridcellColumnId!);
       const values = screen
-        .getAllByRole('gridcell')
+        .getAllByTestId('dataGridRowCell')
         .map((cell) => cell.querySelector('.unifiedDataTable__cellValue')?.textContent ?? '');
       return values.reduce<Record<string, string[]>>((acc, value, i) => {
         const column = columns[i % columns.length];
@@ -506,9 +506,7 @@ describe('UnifiedDataTable', () => {
     const sortByColumn = async (name: string) => {
       await userEvent.click(getColumnActions(name));
       await waitForEuiPopoverOpen();
-      // Column sort button incorrectly renders as "Sort " instead
-      // of "Sort Z-A" in Jest tests, so we need to find it by index
-      await userEvent.click(screen.getAllByRole('button', { name: /Sort/ })[2]);
+      await userEvent.click(screen.getByTitle(/Sort\s+Z-A/im).closest('button')!);
     };
 
     const copySelectedDocsAsText = async () => {
@@ -1285,7 +1283,7 @@ describe('UnifiedDataTable', () => {
 
     const getColumnHeaders = () =>
       screen
-        .getAllByRole('columnheader')
+        .getAllByTestId(/dataGridHeaderCell-/)
         .map((header) => header.querySelector('.euiDataGridHeaderCell__content')?.textContent);
 
     const getCellValues = () =>
