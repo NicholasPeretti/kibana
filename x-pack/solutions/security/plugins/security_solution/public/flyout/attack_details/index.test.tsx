@@ -8,8 +8,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { useExpandableFlyoutApi } from '@kbn/expandable-flyout';
-import { ATTACK_PREVIEW_BANNER, AttackDetailsPanel } from '.';
-import { AttackDetailsRightPanelKey } from './constants/panel_keys';
+import { ATTACK_PREVIEW_BANNER, AttackDetailsPreviewPanel, AttackDetailsRightPanel } from '.';
+import { AttackDetailsPreviewPanelKey, AttackDetailsRightPanelKey } from './constants/panel_keys';
 import { useAttackDetailsContext } from './context';
 import { useTabs } from './hooks/use_tabs';
 import { useNavigateToAttackDetailsLeftPanel } from './hooks/use_navigate_to_attack_details_left_panel';
@@ -49,11 +49,6 @@ describe('AttackDetailsPanel', () => {
   const openRightPanel = jest.fn();
   const openPreviewPanel = jest.fn();
   const setStorage = jest.fn();
-  const customBanner = {
-    title: 'Preview attack details',
-    backgroundColor: 'warning',
-    textColor: 'warning',
-  };
 
   beforeEach(() => {
     jest.mocked(useExpandableFlyoutApi).mockReturnValue({
@@ -70,7 +65,6 @@ describe('AttackDetailsPanel', () => {
     jest.mocked(useAttackDetailsContext).mockReturnValue({
       attackId: 'attack-1',
       indexName: '.alerts-security.attack.discovery.alerts-default',
-      isPreviewMode: false,
       attack: null,
       scopeId: 'scope',
       getFieldsData: jest.fn(),
@@ -97,86 +91,77 @@ describe('AttackDetailsPanel', () => {
     mockFlyoutNavigation.mockClear();
   });
 
-  it('uses preview navigation when rendered in preview mode', () => {
-    jest.mocked(useAttackDetailsContext).mockReturnValue({
-      attackId: 'attack-1',
-      indexName: '.alerts-security.attack.discovery.alerts-default',
-      isPreviewMode: true,
-      banner: customBanner,
-      attack: null,
-      scopeId: 'scope',
-      getFieldsData: jest.fn(),
-      browserFields: {},
-      dataFormattedForFieldBrowser: [],
-      searchHit: { _id: 'attack-1', _source: {} },
-      refetch: jest.fn(),
-    } as unknown as ReturnType<typeof useAttackDetailsContext>);
-
-    const { getByTestId } = render(<AttackDetailsPanel />);
+  it('uses right-panel navigation in right panel', () => {
+    const { getByTestId } = render(<AttackDetailsRightPanel />);
     getByTestId('switchTabButton').click();
+
     expect(mockFlyoutNavigation.mock.calls[0][0]).toEqual(
-      expect.objectContaining({ isPreviewMode: true })
+      expect.objectContaining({ flyoutIsExpandable: true })
     );
-
-    expect(openPreviewPanel).toHaveBeenCalledWith({
-      id: AttackDetailsRightPanelKey,
-      path: { tab: 'table' },
-      params: {
-        attackId: 'attack-1',
-        indexName: '.alerts-security.attack.discovery.alerts-default',
-        isPreviewMode: true,
-        banner: customBanner,
-      },
-    });
-    expect(openRightPanel).not.toHaveBeenCalled();
-  });
-
-  it('uses default preview banner in preview mode when context banner is missing', () => {
-    jest.mocked(useAttackDetailsContext).mockReturnValue({
-      attackId: 'attack-1',
-      indexName: '.alerts-security.attack.discovery.alerts-default',
-      isPreviewMode: true,
-      banner: undefined,
-      attack: null,
-      scopeId: 'scope',
-      getFieldsData: jest.fn(),
-      browserFields: {},
-      dataFormattedForFieldBrowser: [],
-      searchHit: { _id: 'attack-1', _source: {} },
-      refetch: jest.fn(),
-    } as unknown as ReturnType<typeof useAttackDetailsContext>);
-
-    const { getByTestId } = render(<AttackDetailsPanel />);
-    getByTestId('switchTabButton').click();
-
-    expect(openPreviewPanel).toHaveBeenCalledWith({
-      id: AttackDetailsRightPanelKey,
-      path: { tab: 'table' },
-      params: {
-        attackId: 'attack-1',
-        indexName: '.alerts-security.attack.discovery.alerts-default',
-        isPreviewMode: true,
-        banner: ATTACK_PREVIEW_BANNER,
-      },
-    });
-  });
-
-  it('uses right-panel navigation outside preview mode', () => {
-    const { getByTestId } = render(<AttackDetailsPanel />);
-    getByTestId('switchTabButton').click();
-    expect(mockFlyoutNavigation.mock.calls[0][0]).toEqual(
-      expect.objectContaining({ isPreviewMode: false })
-    );
-
     expect(openRightPanel).toHaveBeenCalledWith({
       id: AttackDetailsRightPanelKey,
       path: { tab: 'table' },
       params: {
         attackId: 'attack-1',
         indexName: '.alerts-security.attack.discovery.alerts-default',
-        isPreviewMode: false,
       },
     });
     expect(openPreviewPanel).not.toHaveBeenCalled();
+  });
+
+  it('uses preview navigation when rendered in preview panel', () => {
+    jest.mocked(useAttackDetailsContext).mockReturnValue({
+      attackId: 'attack-1',
+      indexName: '.alerts-security.attack.discovery.alerts-default',
+      attack: null,
+      scopeId: 'scope',
+      getFieldsData: jest.fn(),
+      browserFields: {},
+      dataFormattedForFieldBrowser: [],
+      searchHit: { _id: 'attack-1', _source: {} },
+      refetch: jest.fn(),
+    } as unknown as ReturnType<typeof useAttackDetailsContext>);
+
+    const { getByTestId } = render(<AttackDetailsPreviewPanel />);
+    getByTestId('switchTabButton').click();
+    expect(mockFlyoutNavigation).not.toHaveBeenCalled();
+
+    expect(openPreviewPanel).toHaveBeenCalledWith({
+      id: AttackDetailsPreviewPanelKey,
+      path: { tab: 'table' },
+      params: {
+        attackId: 'attack-1',
+        indexName: '.alerts-security.attack.discovery.alerts-default',
+        banner: ATTACK_PREVIEW_BANNER,
+      },
+    });
+    expect(openRightPanel).not.toHaveBeenCalled();
+  });
+
+  it('uses default preview banner', () => {
+    jest.mocked(useAttackDetailsContext).mockReturnValue({
+      attackId: 'attack-1',
+      indexName: '.alerts-security.attack.discovery.alerts-default',
+      attack: null,
+      scopeId: 'scope',
+      getFieldsData: jest.fn(),
+      browserFields: {},
+      dataFormattedForFieldBrowser: [],
+      searchHit: { _id: 'attack-1', _source: {} },
+      refetch: jest.fn(),
+    } as unknown as ReturnType<typeof useAttackDetailsContext>);
+
+    const { getByTestId } = render(<AttackDetailsPreviewPanel />);
+    getByTestId('switchTabButton').click();
+
+    expect(openPreviewPanel).toHaveBeenCalledWith({
+      id: AttackDetailsPreviewPanelKey,
+      path: { tab: 'table' },
+      params: {
+        attackId: 'attack-1',
+        indexName: '.alerts-security.attack.discovery.alerts-default',
+        banner: ATTACK_PREVIEW_BANNER,
+      },
+    });
   });
 });

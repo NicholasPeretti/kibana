@@ -25,8 +25,7 @@ import {
 import { usePaginatedAlerts } from '../hooks/use_paginated_alerts';
 import { useDataView } from '../../../../data_view_manager/hooks/use_data_view';
 import { getMockDataViewWithMatchedIndices } from '../../../../data_view_manager/mocks/mock_data_view';
-import { AttackDetailsRightPanelKey } from '../../../attack_details/constants/panel_keys';
-import { ATTACK_PREVIEW_BANNER } from '../../../attack_details';
+import { AttackDetailsPreviewPanelKey } from '../../../attack_details/constants/panel_keys';
 
 jest.mock('../hooks/use_paginated_alerts');
 jest.mock('../../../../data_view_manager/hooks/use_data_view');
@@ -98,12 +97,10 @@ describe('<RelatedAttacks />', () => {
       `${CORRELATIONS_DETAILS_RELATED_ATTACKS_SECTION_TEST_ID}AlertPreviewButton`
     )[0].click();
     expect(mockFlyoutApi.openPreviewPanel).toHaveBeenCalledWith({
-      id: AttackDetailsRightPanelKey,
+      id: AttackDetailsPreviewPanelKey,
       params: {
         attackId: 'attack-id-1',
         indexName: 'index',
-        isPreviewMode: true,
-        banner: ATTACK_PREVIEW_BANNER,
       },
     });
     expect(

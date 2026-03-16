@@ -9,7 +9,7 @@ import { i18n } from '@kbn/i18n';
 import type { BrowserFields, TimelineEventsDetailsItem } from '@kbn/timelines-plugin/common';
 import type { AttackDiscoveryAlert } from '@kbn/elastic-assistant-common';
 import type { SearchHit } from '../../../common/search_strategy';
-import type { AttackDetailsPanelParams, AttackDetailsProps } from './types';
+import type { AttackDetailsProps } from './types';
 import { FlyoutLoading } from '../shared/components/flyout_loading';
 import { FlyoutError } from '../shared/components/flyout_error';
 import { useSpaceId } from '../../common/hooks/use_space_id';
@@ -61,14 +61,6 @@ export interface AttackDetailsContext {
    * Refetches the attack document from the server
    */
   refetch: () => Promise<void>;
-  /**
-   * Indicates the panel is rendered in preview context.
-   */
-  isPreviewMode?: boolean;
-  /**
-   * Optional preview banner shown at top of preview panel.
-   */
-  banner?: AttackDetailsPanelParams['banner'];
 }
 
 /**
@@ -84,7 +76,7 @@ export type AttackDetailsProviderProps = {
 } & Partial<AttackDetailsProps['params']>;
 
 export const AttackDetailsProvider = memo(
-  ({ attackId, indexName, isPreviewMode, banner, children }: AttackDetailsProviderProps) => {
+  ({ attackId, indexName, children }: AttackDetailsProviderProps) => {
     const scopeId = useSpaceId();
     // data view side: browserFields + field-browser data
     const {
@@ -119,8 +111,6 @@ export const AttackDetailsProvider = memo(
               getFieldsData,
               dataFormattedForFieldBrowser,
               refetch,
-              isPreviewMode: isPreviewMode ?? false,
-              banner,
             }
           : undefined,
       [
@@ -133,8 +123,6 @@ export const AttackDetailsProvider = memo(
         searchHit,
         getFieldsData,
         refetch,
-        isPreviewMode,
-        banner,
       ]
     );
 

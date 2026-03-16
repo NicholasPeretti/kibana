@@ -18,54 +18,43 @@ import { useKibana } from '../../common/lib/kibana';
 
 import { useTabs } from './hooks/use_tabs';
 import { useNavigateToAttackDetailsLeftPanel } from './hooks/use_navigate_to_attack_details_left_panel';
-import { ATTACK_PREVIEW_BANNER, useAttackDetailsContext } from './context';
+import { useAttackDetailsContext } from './context';
 import { PanelHeader } from './header';
 
 export type AttackDetailsPanelPaths = 'overview' | 'table' | 'json';
 export { ATTACK_PREVIEW_BANNER } from './context';
 
 /**
- * Panel to be displayed in Attack Details flyout
+ * Panel to be displayed in Attack Details flyout right section.
  */
-export const AttackDetailsPanel: React.FC<Partial<AttackDetailsProps>> = memo(({ path }) => {
+export const AttackDetailsRightPanel: React.FC<Partial<AttackDetailsProps>> = memo(({ path }) => {
   const { storage } = useKibana().services;
-  const { openRightPanel, openPreviewPanel } = useExpandableFlyoutApi();
-  const { attackId, indexName, isPreviewMode = false, banner } = useAttackDetailsContext();
+  const { openRightPanel } = useExpandableFlyoutApi();
+  const { attackId, indexName } = useAttackDetailsContext();
   const expandDetails = useNavigateToAttackDetailsLeftPanel();
 
   const { tabsDisplayed, selectedTabId } = useTabs({ path });
 
   const setSelectedTabId = useCallback(
     (tabId: AttackDetailsPanelTabType['id']) => {
-      const previewBanner = banner ?? ATTACK_PREVIEW_BANNER;
-      const panel = {
+      openRightPanel({
         id: AttackDetailsRightPanelKey,
         path: { tab: tabId },
         params: {
           attackId,
           indexName,
-          isPreviewMode,
-          ...(isPreviewMode ? { banner: previewBanner } : {}),
         },
-      };
-      if (isPreviewMode) {
-        openPreviewPanel(panel);
-      } else {
-        openRightPanel(panel);
-      }
+      });
+
       // saving which tab is currently selected in the right panel in local storage
       storage.set(FLYOUT_STORAGE_KEYS.RIGHT_PANEL_SELECTED_TABS, tabId);
     },
-    [attackId, banner, indexName, isPreviewMode, openPreviewPanel, openRightPanel, storage]
+    [attackId, indexName, openRightPanel, storage]
   );
 
   return (
     <>
-      <FlyoutNavigation
-        flyoutIsExpandable={true}
-        expandDetails={expandDetails}
-        isPreviewMode={isPreviewMode}
-      />
+      <FlyoutNavigation flyoutIsExpandable={true} expandDetails={expandDetails} />
       <PanelHeader
         selectedTabId={selectedTabId}
         setSelectedTabId={setSelectedTabId}
@@ -77,4 +66,5 @@ export const AttackDetailsPanel: React.FC<Partial<AttackDetailsProps>> = memo(({
   );
 });
 
-AttackDetailsPanel.displayName = 'AttackDetailsPanel';
+AttackDetailsRightPanel.displayName = 'AttackDetailsRightPanel';
+export { AttackDetailsPreviewPanel } from './preview';

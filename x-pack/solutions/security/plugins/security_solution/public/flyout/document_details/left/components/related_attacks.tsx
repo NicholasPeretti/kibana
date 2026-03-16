@@ -17,8 +17,7 @@ import {
   type CorrelationsCustomTableColumn,
 } from './correlations_details_alerts_table';
 import { CORRELATIONS_DETAILS_RELATED_ATTACKS_SECTION_TEST_ID } from './test_ids';
-import { AttackDetailsRightPanelKey } from '../../../attack_details/constants/panel_keys';
-import { ATTACK_PREVIEW_BANNER } from '../../../attack_details';
+import { AttackDetailsPreviewPanelKey } from '../../../attack_details/constants/panel_keys';
 
 export interface RelatedAttacksProps {
   /**
@@ -45,12 +44,10 @@ export const RelatedAttacks: React.FC<RelatedAttacksProps> = ({ attackIds, scope
   const openAttackPreview = useCallback(
     (attackId: string, indexName: string) => {
       openPreviewPanel({
-        id: AttackDetailsRightPanelKey,
+        id: AttackDetailsPreviewPanelKey,
         params: {
           attackId,
           indexName,
-          isPreviewMode: true,
-          banner: ATTACK_PREVIEW_BANNER,
         },
       });
     },
