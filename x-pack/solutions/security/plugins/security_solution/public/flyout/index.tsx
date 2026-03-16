@@ -336,7 +336,7 @@ export const expandableFlyoutDocumentsPanels: ExpandableFlyoutProps['registeredP
   {
     key: AttackDetailsPreviewPanelKey,
     component: (props) => (
-      <AttackDetailsProvider {...(props as AttackDetailsProps).params}>
+      <AttackDetailsProvider {...(props as AttackDetailsProps).params} isPreviewMode={true}>
         <AttackDetailsPreviewPanel path={props.path as AttackDetailsProps['path']} />
       </AttackDetailsProvider>
     ),

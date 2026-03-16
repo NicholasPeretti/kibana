@@ -15,6 +15,7 @@ import type {
 export interface AttackDetailsPanelParams extends Record<string, unknown> {
   attackId: string;
   indexName: string;
+  isPreviewMode?: boolean;
 }
 
 export interface AttackDetailsProps extends FlyoutPanelProps {

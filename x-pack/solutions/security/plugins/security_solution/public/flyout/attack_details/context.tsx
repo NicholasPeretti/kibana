@@ -42,6 +42,10 @@ export interface AttackDetailsContext {
    */
   scopeId: string;
   /**
+   * Whether this panel is rendered in preview mode.
+   */
+  isPreviewMode: boolean;
+  /**
    * The actual raw document object
    */
   searchHit: SearchHit;
@@ -76,7 +80,7 @@ export type AttackDetailsProviderProps = {
 } & Partial<AttackDetailsProps['params']>;
 
 export const AttackDetailsProvider = memo(
-  ({ attackId, indexName, children }: AttackDetailsProviderProps) => {
+  ({ attackId, indexName, isPreviewMode = false, children }: AttackDetailsProviderProps) => {
     const scopeId = useSpaceId();
     // data view side: browserFields + field-browser data
     const {
@@ -107,6 +111,7 @@ export const AttackDetailsProvider = memo(
               browserFields,
               indexName,
               scopeId,
+              isPreviewMode,
               searchHit,
               getFieldsData,
               dataFormattedForFieldBrowser,
@@ -119,6 +124,7 @@ export const AttackDetailsProvider = memo(
         browserFields,
         indexName,
         scopeId,
+        isPreviewMode,
         dataFormattedForFieldBrowser,
         searchHit,
         getFieldsData,
