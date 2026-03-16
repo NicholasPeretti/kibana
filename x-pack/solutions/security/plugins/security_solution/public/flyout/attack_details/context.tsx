@@ -5,6 +5,7 @@
  * 2.0.
  */
 import React, { createContext, memo, useContext, useMemo } from 'react';
+import { i18n } from '@kbn/i18n';
 import type { BrowserFields, TimelineEventsDetailsItem } from '@kbn/timelines-plugin/common';
 import type { AttackDiscoveryAlert } from '@kbn/elastic-assistant-common';
 import type { SearchHit } from '../../../common/search_strategy';
@@ -14,6 +15,14 @@ import { FlyoutError } from '../shared/components/flyout_error';
 import { useSpaceId } from '../../common/hooks/use_space_id';
 import { useAttackDetails } from './hooks/use_attack_details';
 import type { GetFieldsData } from '../document_details/shared/hooks/use_get_fields_data';
+
+export const ATTACK_PREVIEW_BANNER = {
+  title: i18n.translate('xpack.securitySolution.flyout.right.attack.attackPreviewTitle', {
+    defaultMessage: 'Preview attack details',
+  }),
+  backgroundColor: 'warning',
+  textColor: 'warning',
+};
 
 export interface AttackDetailsContext {
   /**

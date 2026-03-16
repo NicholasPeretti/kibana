@@ -6,7 +6,6 @@
  */
 import React, { memo, useCallback } from 'react';
 import { useExpandableFlyoutApi } from '@kbn/expandable-flyout';
-import { i18n } from '@kbn/i18n';
 import type { AttackDetailsProps } from './types';
 import { FlyoutNavigation } from '../shared/components/flyout_navigation';
 
@@ -19,18 +18,11 @@ import { useKibana } from '../../common/lib/kibana';
 
 import { useTabs } from './hooks/use_tabs';
 import { useNavigateToAttackDetailsLeftPanel } from './hooks/use_navigate_to_attack_details_left_panel';
-import { useAttackDetailsContext } from './context';
+import { ATTACK_PREVIEW_BANNER, useAttackDetailsContext } from './context';
 import { PanelHeader } from './header';
 
 export type AttackDetailsPanelPaths = 'overview' | 'table' | 'json';
-
-export const ATTACK_PREVIEW_BANNER = {
-  title: i18n.translate('xpack.securitySolution.flyout.right.attack.attackPreviewTitle', {
-    defaultMessage: 'Preview attack details',
-  }),
-  backgroundColor: 'warning',
-  textColor: 'warning',
-};
+export { ATTACK_PREVIEW_BANNER } from './context';
 
 /**
  * Panel to be displayed in Attack Details flyout
