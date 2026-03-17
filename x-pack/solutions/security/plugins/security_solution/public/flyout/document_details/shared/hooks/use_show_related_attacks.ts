@@ -6,6 +6,8 @@
  */
 
 import { ALERT_ATTACK_IDS } from '../../../../../common/field_maps/field_names';
+import { ENABLE_ALERTS_AND_ATTACKS_ALIGNMENT_SETTING } from '../../../../../common/constants';
+import { useKibana } from '../../../../common/lib/kibana/kibana_react';
 import type { GetFieldsData } from './use_get_fields_data';
 import { getFieldArray } from '../utils';
 
@@ -33,12 +35,18 @@ export interface UseShowRelatedAttacksResult {
 export const useShowRelatedAttacks = ({
   getFieldsData,
 }: UseShowRelatedAttacksParams): UseShowRelatedAttacksResult => {
+  const { uiSettings } = useKibana().services;
+  const enableAlertsAndAttacksAlignment = uiSettings.get(
+    ENABLE_ALERTS_AND_ATTACKS_ALIGNMENT_SETTING,
+    false
+  );
+
   const attackIds = getFieldArray(getFieldsData(ALERT_ATTACK_IDS)).filter(
     (attackId): attackId is string => typeof attackId === 'string'
   );
 
   return {
-    show: attackIds.length > 0,
+    show: enableAlertsAndAttacksAlignment && attackIds.length > 0,
     attackIds,
   };
 };
