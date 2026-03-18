@@ -89,8 +89,12 @@ test.describe('Query streams - Create query stream', { tag: tags.stateful.classi
     await pageObjects.streams.kibanaMonacoEditor.setCodeEditorValue(esqlQuery);
     await pageObjects.streams.clickQueryStreamFormCreateButton();
 
-    // child query stream created in the UI
+    // child query stream created appears in the UI
     await expect(pageObjects.streams.childQueryStreamCreatedSuccessToast).toBeVisible();
+    // Wait for query mode to be unselected before we click it
+    await expect(
+      pageObjects.streams.childStreamTypeSelector.getByTestId('queryMode')
+    ).toHaveAttribute('aria-pressed', 'false');
     await pageObjects.streams.selectChildStreamType('Query');
     await expect(
       page.getByTestId(`queryStream-${parentStreamName}.${childStreamName}`)
