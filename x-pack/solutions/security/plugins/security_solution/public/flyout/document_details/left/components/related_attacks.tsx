@@ -127,6 +127,7 @@ export const RelatedAttacks: React.FC<RelatedAttacksProps> = ({ attackIds, scope
       eventId={eventId}
       indexName={attackIndexName}
       columns={columns}
+      timelineDataViewId={dataView.id}
       noItemsMessage={
         <FormattedMessage
           id="xpack.securitySolution.flyout.left.insights.correlations.relatedAttacksNoDataDescription"

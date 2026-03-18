@@ -82,6 +82,10 @@ export interface CorrelationsDetailsAlertsTableProps {
    * Optional table columns override
    */
   columns?: Array<CorrelationsCustomTableColumn>;
+  /**
+   * Optional data view id to use when opening timeline.
+   */
+  timelineDataViewId?: string;
 }
 
 /**
@@ -97,6 +101,7 @@ export const CorrelationsDetailsAlertsTable: FC<CorrelationsDetailsAlertsTablePr
   'data-test-subj': dataTestSubj,
   indexName,
   columns,
+  timelineDataViewId,
 }) => {
   const {
     setPagination,
@@ -268,6 +273,7 @@ export const CorrelationsDetailsAlertsTable: FC<CorrelationsDetailsAlertsTablePr
                 filters={filters}
                 asEmptyButton
                 iconType="timeline"
+                dataViewId={timelineDataViewId}
               >
                 {ACTION_INVESTIGATE_IN_TIMELINE}
               </InvestigateInTimelineButton>
