@@ -6,20 +6,16 @@
  */
 
 import React, { useMemo } from 'react';
-import {
-  EuiBadge,
-  EuiHorizontalRule,
-  EuiToolTip,
-  EuiFlexGroup,
-  EuiFlexItem,
-  EuiText,
-} from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, EuiText } from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
+import type { UserProfileWithAvatar } from '@kbn/user-profile-components';
+import { UserAvatar } from '@kbn/user-profile-components';
 
 import { useBulkGetUserProfiles } from '../../../../../common/components/user_profiles/use_bulk_get_user_profiles';
 import { UNKNOWN_USER_PROFILE_NAME } from '../../../../../common/components/user_profiles/translations';
+import { PopoverItems } from '../../../../../common/components/popover_items';
 
-const ASSIGNEES_TOOLTIP_MAX_HEIGHT = '150px';
+type AssigneeItem = UserProfileWithAvatar | undefined;
 
 export const AssigneesBadge = ({ assignees }: { assignees: string[] }) => {
   const uids = useMemo(() => new Set(assignees), [assignees]);
@@ -29,45 +25,33 @@ export const AssigneesBadge = ({ assignees }: { assignees: string[] }) => {
     return null;
   }
 
+  const items: AssigneeItem[] = assignedUsers ?? assignees.map(() => undefined);
+
   return (
-    <EuiToolTip
-      content={
-        <EuiFlexGroup direction="column" gutterSize="none">
-          <EuiFlexItem grow={false}>
-            <EuiText size="s">
-              {i18n.translate(
-                'xpack.securitySolution.detectionEngine.attacks.tableSection.assigneesTooltipTitle',
-                { defaultMessage: 'Assignees' }
-              )}
-            </EuiText>
-          </EuiFlexItem>
-          <EuiFlexItem grow={false}>
-            <EuiHorizontalRule margin="xs" />
-          </EuiFlexItem>
-          <EuiFlexItem grow={false}>
-            <EuiFlexGroup
-              direction="column"
-              gutterSize="xs"
-              style={{
-                maxHeight: ASSIGNEES_TOOLTIP_MAX_HEIGHT,
-                overflowY: 'auto',
-              }}
-            >
-              {assignedUsers?.map((user, index) => (
-                <EuiFlexItem key={user?.uid ?? index}>
-                  <EuiText size="s">
-                    {user ? user.user.email ?? user.user.username : UNKNOWN_USER_PROFILE_NAME}
-                  </EuiText>
-                </EuiFlexItem>
-              )) ?? null}
-            </EuiFlexGroup>
-          </EuiFlexItem>
-        </EuiFlexGroup>
-      }
-    >
-      <EuiBadge tabIndex={0} color="hollow" iconType="users">
-        {assignees.length}
-      </EuiBadge>
-    </EuiToolTip>
+    <PopoverItems
+      items={items}
+      popoverTitle={i18n.translate(
+        'xpack.securitySolution.detectionEngine.attacks.tableSection.assigneesTooltipTitle',
+        { defaultMessage: 'Assignees' }
+      )}
+      popoverButtonTitle={assignees.length.toString()}
+      popoverButtonIcon="users"
+      dataTestPrefix="attack-assignees-badge"
+      renderItem={(user: AssigneeItem, index: number) => {
+        const displayName = user
+          ? user.user.email ?? user.user.username
+          : UNKNOWN_USER_PROFILE_NAME;
+        return (
+          <EuiFlexGroup key={index} alignItems="center" gutterSize="s" responsive={false}>
+            <EuiFlexItem grow={false}>
+              <UserAvatar user={user?.user} avatar={user?.data?.avatar} size="s" />
+            </EuiFlexItem>
+            <EuiFlexItem>
+              <EuiText size="s">{displayName}</EuiText>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+        );
+      }}
+    />
   );
 };

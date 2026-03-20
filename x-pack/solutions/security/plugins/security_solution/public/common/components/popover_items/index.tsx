@@ -89,7 +89,10 @@ const PopoverItemsComponent = <T extends unknown>({
             iconType={popoverButtonIcon}
             color="hollow"
             data-test-subj={`${dataTestPrefix}DisplayPopoverButton`}
-            onClick={() => setIsExceptionOverflowPopoverOpen(!isExceptionOverflowPopoverOpen)}
+            onClick={(e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+              e.stopPropagation();
+              setIsExceptionOverflowPopoverOpen(!isExceptionOverflowPopoverOpen);
+            }}
             onClickAriaLabel={popoverButtonTitle}
           >
             {popoverButtonTitle}
