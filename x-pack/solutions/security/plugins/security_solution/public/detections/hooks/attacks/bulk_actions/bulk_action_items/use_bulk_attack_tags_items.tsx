@@ -87,6 +87,7 @@ export const useBulkAttackTagsItems = ({
           setIsLoading={setIsBulkActionsLoading}
           clearSelection={clearSelection}
           closePopoverMenu={closePopoverMenu}
+          emptyMessage={i18n.ATTACK_TAGS_MENU_EMPTY}
           onSubmit={async (tags, _, onSuccess, setIsLoading) => {
             closePopoverMenu();
 
