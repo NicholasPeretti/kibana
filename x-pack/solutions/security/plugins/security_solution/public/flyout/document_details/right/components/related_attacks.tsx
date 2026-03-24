@@ -8,7 +8,7 @@
 import React, { useMemo } from 'react';
 import { FormattedMessage } from '@kbn/i18n-react';
 import { CORRELATIONS_TAB_ID } from '../../left/components/correlations_details';
-import { InsightsSummaryRow } from './insights_summary_row';
+import { InsightsSummaryRow } from '../../../../flyout_v2/document/components/insights_summary_row';
 import { CORRELATIONS_RELATED_ATTACKS_TEST_ID } from './test_ids';
 
 export interface RelatedAttacksProps {
