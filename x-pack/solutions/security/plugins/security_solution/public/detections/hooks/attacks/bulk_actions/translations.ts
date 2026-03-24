@@ -115,28 +115,28 @@ export const ADD_TO_EXISTING_CASE = i18n.translate(
   }
 );
 
-export const ALERT_TAGS_CONTEXT_MENU_ITEM_TITLE = i18n.translate(
+export const ATTACK_TAGS_CONTEXT_MENU_ITEM_TITLE = i18n.translate(
   'xpack.securitySolution.detections.hooks.attacks.bulkActions.alertTagsContextMenuItemTitle',
   {
     defaultMessage: 'Apply attack tags',
   }
 );
 
-export const ALERT_TAGS_CONTEXT_MENU_ITEM_TOOLTIP_INFO = i18n.translate(
+export const ATTACK_TAGS_CONTEXT_MENU_ITEM_TOOLTIP_INFO = i18n.translate(
   'xpack.securitySolution.detections.hooks.attacks.bulkActions.alertTagsContextMenuItemTooltip',
   {
     defaultMessage: 'Change attack tag options in Kibana Advanced Settings.',
   }
 );
 
-export const ALERT_ASSIGNEES_CONTEXT_MENU_ITEM_TITLE = i18n.translate(
+export const ATTACK_ASSIGNEES_CONTEXT_MENU_ITEM_TITLE = i18n.translate(
   'xpack.securitySolution.detections.hooks.attacks.bulkActions.alertAssigneesContextMenuItemTitle',
   {
     defaultMessage: 'Assign attack',
   }
 );
 
-export const REMOVE_ALERT_ASSIGNEES_CONTEXT_MENU_TITLE = i18n.translate(
+export const REMOVE_ATTACK_ASSIGNEES_CONTEXT_MENU_TITLE = i18n.translate(
   'xpack.securitySolution.detections.hooks.attacks.bulkActions.removeAlertAssigneesContextMenuTitle',
   {
     defaultMessage: 'Unassign attack',
