@@ -5,7 +5,7 @@
  * 2.0.
  */
 
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { EuiFlexGroup, EuiFlexItem, EuiText } from '@elastic/eui';
 import { i18n } from '@kbn/i18n';
 import type { UserProfileWithAvatar } from '@kbn/user-profile-components';
@@ -20,38 +20,53 @@ type AssigneeItem = UserProfileWithAvatar | undefined;
 export const AssigneesBadge = ({ assignees }: { assignees: string[] }) => {
   const uids = useMemo(() => new Set(assignees), [assignees]);
   const { data: assignedUsers } = useBulkGetUserProfiles({ uids });
+  const items: AssigneeItem[] = useMemo(
+    () => assignedUsers ?? assignees.map(() => undefined),
+    [assignedUsers, assignees]
+  );
+  const popoverButtonTitle = useMemo(() => assignees.length.toString(), [assignees.length]);
+  const popoverTitle = useMemo(
+    () =>
+      i18n.translate(
+        'xpack.securitySolution.detectionEngine.attacks.tableSection.assigneesTooltipTitle',
+        {
+          defaultMessage: 'Assignees',
+        }
+      ),
+    []
+  );
+  const renderAssigneeItem = useCallback((user: AssigneeItem, index: number) => {
+    const displayName = user ? user.user.email ?? user.user.username : UNKNOWN_USER_PROFILE_NAME;
+    return (
+      <EuiFlexGroup
+        key={index}
+        alignItems="center"
+        gutterSize="s"
+        responsive={false}
+        style={{ width: '100%' }}
+      >
+        <EuiFlexItem grow={false}>
+          <UserAvatar user={user?.user} avatar={user?.data?.avatar} size="s" />
+        </EuiFlexItem>
+        <EuiFlexItem>
+          <EuiText size="s">{displayName}</EuiText>
+        </EuiFlexItem>
+      </EuiFlexGroup>
+    );
+  }, []);
 
   if (assignees.length === 0) {
     return null;
   }
 
-  const items: AssigneeItem[] = assignedUsers ?? assignees.map(() => undefined);
-
   return (
     <PopoverItems
       items={items}
-      popoverTitle={i18n.translate(
-        'xpack.securitySolution.detectionEngine.attacks.tableSection.assigneesTooltipTitle',
-        { defaultMessage: 'Assignees' }
-      )}
-      popoverButtonTitle={assignees.length.toString()}
+      popoverTitle={popoverTitle}
+      popoverButtonTitle={popoverButtonTitle}
       popoverButtonIcon="users"
       dataTestPrefix="attack-assignees-badge"
-      renderItem={(user: AssigneeItem, index: number) => {
-        const displayName = user
-          ? user.user.email ?? user.user.username
-          : UNKNOWN_USER_PROFILE_NAME;
-        return (
-          <EuiFlexGroup key={index} alignItems="center" gutterSize="s" responsive={false}>
-            <EuiFlexItem grow={false}>
-              <UserAvatar user={user?.user} avatar={user?.data?.avatar} size="s" />
-            </EuiFlexItem>
-            <EuiFlexItem>
-              <EuiText size="s">{displayName}</EuiText>
-            </EuiFlexItem>
-          </EuiFlexGroup>
-        );
-      }}
+      renderItem={renderAssigneeItem}
     />
   );
 };
