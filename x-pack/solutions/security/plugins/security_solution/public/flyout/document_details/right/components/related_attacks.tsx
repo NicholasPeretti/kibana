@@ -7,7 +7,9 @@
 
 import React, { useMemo } from 'react';
 import { FormattedMessage } from '@kbn/i18n-react';
+import { LeftPanelInsightsTab } from '../../left';
 import { CORRELATIONS_TAB_ID } from '../../left/components/correlations_details';
+import { useNavigateToLeftPanel } from '../../shared/hooks/use_navigate_to_left_panel';
 import { InsightsSummaryRow } from '../../../../flyout_v2/document/components/insights_summary_row';
 import { CORRELATIONS_RELATED_ATTACKS_TEST_ID } from './test_ids';
 
@@ -23,6 +25,10 @@ export interface RelatedAttacksProps {
  */
 export const RelatedAttacks: React.VFC<RelatedAttacksProps> = ({ attackIds }) => {
   const count = attackIds.length;
+  const goToCorrelationsTab = useNavigateToLeftPanel({
+    tab: LeftPanelInsightsTab,
+    subTab: CORRELATIONS_TAB_ID,
+  });
 
   const text = useMemo(
     () => (
@@ -39,7 +45,7 @@ export const RelatedAttacks: React.VFC<RelatedAttacksProps> = ({ attackIds }) =>
     <InsightsSummaryRow
       text={text}
       value={count}
-      expandedSubTab={CORRELATIONS_TAB_ID}
+      onShowDetails={goToCorrelationsTab}
       data-test-subj={CORRELATIONS_RELATED_ATTACKS_TEST_ID}
       key={`correlation-row-${CORRELATIONS_RELATED_ATTACKS_TEST_ID}`}
     />
