@@ -49,6 +49,10 @@ import { KPIsSection } from './kpis/kpis_section';
 
 export const CONTENT_TEST_ID = 'attacks-page-content';
 export const SECURITY_SOLUTION_PAGE_WRAPPER_TEST_ID = 'attacks-page-security-solution-page-wrapper';
+export const ATTACKS_PAGE_ACTIONS_TEST_ID = 'attacks-page-actions';
+export const ATTACKS_PAGE_ASSIGNEE_FILTER_TEST_ID = 'attacks-page-assignee-filter';
+export const ATTACKS_PAGE_CONNECTOR_FILTER_TEST_ID = 'attacks-page-connector-filter';
+export const ATTACKS_PAGE_STANDARD_FILTERS_TEST_ID = 'attacks-page-standard-filters';
 const FILTERS_SECTION_WIDTH = 480;
 
 /**
@@ -159,7 +163,7 @@ export const AttacksPageContent = React.memo(({ dataView }: AttacksPageContentPr
               </EuiFlexGroup>
             }
           >
-            <EuiFlexGroup gutterSize="m">
+            <EuiFlexGroup gutterSize="m" data-test-subj={ATTACKS_PAGE_ACTIONS_TEST_ID}>
               <EuiFlexItem>
                 <Schedule openFlyout={openSchedulesFlyout} />
               </EuiFlexItem>
@@ -171,32 +175,38 @@ export const AttacksPageContent = React.memo(({ dataView }: AttacksPageContentPr
             <EuiFlexItem grow={1} style={{ maxWidth: FILTERS_SECTION_WIDTH }}>
               <EuiFlexGroup direction="row" responsive={false}>
                 <EuiFlexItem grow={1}>
-                  <FilterByAssigneesPopover
-                    selectedUserIds={assignees}
-                    onSelectionChange={onAssigneesSelectionChange}
-                    compressed={true}
-                  />
+                  <div data-test-subj={ATTACKS_PAGE_ASSIGNEE_FILTER_TEST_ID}>
+                    <FilterByAssigneesPopover
+                      selectedUserIds={assignees}
+                      onSelectionChange={onAssigneesSelectionChange}
+                      compressed={true}
+                    />
+                  </div>
                 </EuiFlexItem>
                 <EuiFlexItem grow={1}>
-                  <ConnectorFilter
-                    aiConnectors={aiConnectors}
-                    connectorNames={aiConnectorNames}
-                    selectedConnectorNames={selectedConnectorNames}
-                    setSelectedConnectorNames={setSelectedConnectorNames}
-                    compressed={true}
-                  />
+                  <div data-test-subj={ATTACKS_PAGE_CONNECTOR_FILTER_TEST_ID}>
+                    <ConnectorFilter
+                      aiConnectors={aiConnectors}
+                      connectorNames={aiConnectorNames}
+                      selectedConnectorNames={selectedConnectorNames}
+                      setSelectedConnectorNames={setSelectedConnectorNames}
+                      compressed={true}
+                    />
+                  </div>
                 </EuiFlexItem>
               </EuiFlexGroup>
             </EuiFlexItem>
             <VerticalDivider grow={false} aria-hidden={true} />
             <EuiFlexItem grow={1} style={{ minWidth: FILTERS_SECTION_WIDTH }}>
-              <FiltersSection
-                dataView={dataView}
-                pageFilters={pageFilters}
-                setStatusFilter={setStatusFilter}
-                setPageFilters={setPageFilters}
-                setPageFilterHandler={setPageFilterHandler}
-              />
+              <div data-test-subj={ATTACKS_PAGE_STANDARD_FILTERS_TEST_ID}>
+                <FiltersSection
+                  dataView={dataView}
+                  pageFilters={pageFilters}
+                  setStatusFilter={setStatusFilter}
+                  setPageFilters={setPageFilters}
+                  setPageFilterHandler={setPageFilterHandler}
+                />
+              </div>
             </EuiFlexItem>
           </EuiFlexGroup>
           <EuiSpacer size="l" />
