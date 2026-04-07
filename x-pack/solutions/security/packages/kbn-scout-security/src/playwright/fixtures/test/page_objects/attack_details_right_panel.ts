@@ -14,14 +14,11 @@ const ATTACK_DETAILS_INSIGHTS_SECTION_CONTENT_TEST_ID =
   'attack-details-flyout-overview-insights-sectionContent';
 const ATTACK_DETAILS_CORRELATIONS_SECTION_TEST_ID =
   'attack-details-flyout-overview-insights-correlations';
-const ATTACK_DETAILS_NOTES_TITLE_TEST_ID = 'attack-details-flyout-header-notes-title';
-
 export class AttackDetailsRightPanelPage {
   public detailsFlyoutBody: Locator;
   public insightsSectionHeader: Locator;
   public insightsSectionContent: Locator;
   public correlationsSection: Locator;
-  public notesTitle: Locator;
 
   constructor(private readonly page: ScoutPage) {
     this.detailsFlyoutBody = this.page.testSubj.locator(ATTACK_DETAILS_FLYOUT_BODY_TEST_ID);
@@ -34,7 +31,6 @@ export class AttackDetailsRightPanelPage {
     this.correlationsSection = this.page.testSubj.locator(
       ATTACK_DETAILS_CORRELATIONS_SECTION_TEST_ID
     );
-    this.notesTitle = this.page.testSubj.locator(ATTACK_DETAILS_NOTES_TITLE_TEST_ID);
   }
 
   async expandInsightsSectionIfCollapsed() {

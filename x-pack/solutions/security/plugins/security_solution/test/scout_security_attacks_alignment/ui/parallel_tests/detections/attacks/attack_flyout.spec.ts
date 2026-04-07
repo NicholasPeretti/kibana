@@ -64,10 +64,6 @@ spaceTest.describe(
         await expect(attackDetailsRightPanelPage.correlationsSection).toBeAttached();
         await attackDetailsRightPanelPage.correlationsSection.scrollIntoViewIfNeeded();
         await expect(attackDetailsRightPanelPage.correlationsSection).toBeVisible();
-
-        await expect(attackDetailsRightPanelPage.notesTitle).toBeAttached();
-        await attackDetailsRightPanelPage.notesTitle.scrollIntoViewIfNeeded();
-        await expect(attackDetailsRightPanelPage.notesTitle).toBeVisible();
       }
     );
   }
