@@ -121,6 +121,15 @@ export class DetectionsAttackDiscoveryPage {
 
   async navigateToAttacksPage() {
     await this.page.gotoApp(ATTACKS_PAGE_URL);
+
+    // The attacks wrapper shows a skeleton until the data view finishes loading; only then does
+    // AttacksPageContent mount and expose attacks-page-content. This wait confirms real UI, not the loader.
+    await this.attacksPageContent.waitFor({ state: 'visible', timeout: 30_000 });
+
+    // The search bar is rendered via FiltersGlobal into the global KQL header portal, so it can
+    // appear after the main content tree. SiemSearchBar also skips rendering until index patterns
+    // are ready. Waiting here avoids races that show up on slower CI but not locally.
+    await this.attacksPageSearchBar.waitFor({ state: 'visible', timeout: 30_000 });
   }
 
   async expandDetectionsSection() {
