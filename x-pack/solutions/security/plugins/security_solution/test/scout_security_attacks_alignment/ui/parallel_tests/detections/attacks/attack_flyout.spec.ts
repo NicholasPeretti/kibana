@@ -32,7 +32,7 @@ spaceTest.describe(
     });
 
     spaceTest(
-      'shows Insights (with Correlations) and Notes in attack details flyout',
+      'shows Insights and Correlations in the attack details flyout',
       async ({ pageObjects }) => {
         const { detectionsAttackDiscoveryPage, attackDetailsRightPanelPage } = pageObjects;
 
