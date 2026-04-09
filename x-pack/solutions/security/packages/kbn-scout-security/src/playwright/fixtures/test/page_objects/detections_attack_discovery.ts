@@ -32,6 +32,7 @@ const ATTACKS_PAGE_TABLE_SECTION_TEST_ID = 'attacks-page-table-section';
 const SCHEDULE_BUTTON_TEST_ID = 'schedule';
 const SETTINGS_FLYOUT_TEST_ID = 'settingsFlyout';
 const SCHEDULES_TABLE_TEST_ID = 'schedulesTable';
+const ATTACK_DETAILS_FLYOUT_BODY_TEST_ID = 'attack-details-flyout-body';
 const FILTER_BY_ASSIGNEES_BUTTON_TEST_ID = 'filter-popover-button-assignees';
 const CONNECTOR_FILTER_BUTTON_TEST_ID = 'connectorFilterButton';
 const EXPAND_ATTACK_BUTTON_TEST_ID = 'expand-attack-button';
@@ -55,6 +56,7 @@ export class DetectionsAttackDiscoveryPage {
   public scheduleButton: Locator;
   public settingsFlyout: Locator;
   public schedulesTable: Locator;
+  public attackDetailsFlyoutBody: Locator;
   public assigneesFilterButton: Locator;
   public connectorFilterButton: Locator;
   public expandAttackDetailsButtons: Locator;
@@ -76,6 +78,7 @@ export class DetectionsAttackDiscoveryPage {
     this.scheduleButton = this.page.testSubj.locator(SCHEDULE_BUTTON_TEST_ID);
     this.settingsFlyout = this.page.testSubj.locator(SETTINGS_FLYOUT_TEST_ID);
     this.schedulesTable = this.page.testSubj.locator(SCHEDULES_TABLE_TEST_ID);
+    this.attackDetailsFlyoutBody = this.page.testSubj.locator(ATTACK_DETAILS_FLYOUT_BODY_TEST_ID);
     this.assigneesFilterButton = this.page.testSubj.locator(FILTER_BY_ASSIGNEES_BUTTON_TEST_ID);
     this.connectorFilterButton = this.page.testSubj.locator(CONNECTOR_FILTER_BUTTON_TEST_ID);
     this.expandAttackDetailsButtons = this.page.testSubj.locator(EXPAND_ATTACK_BUTTON_TEST_ID);
@@ -138,6 +141,8 @@ export class DetectionsAttackDiscoveryPage {
 
   async openScheduleFlyout() {
     await this.scheduleButton.click();
+    await this.settingsFlyout.waitFor({ state: 'visible' });
+    await this.schedulesTable.waitFor({ state: 'visible' });
   }
 
   async openFirstAttackDetailsFromTable() {
@@ -148,5 +153,6 @@ export class DetectionsAttackDiscoveryPage {
     }
 
     await firstExpandAttackButton.click();
+    await this.attackDetailsFlyoutBody.waitFor({ state: 'visible' });
   }
 }

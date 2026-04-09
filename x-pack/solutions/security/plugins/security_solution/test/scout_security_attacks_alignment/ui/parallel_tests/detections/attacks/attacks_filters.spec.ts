@@ -7,7 +7,6 @@
 
 import { spaceTest, tags } from '@kbn/scout-security';
 import { expect } from '@kbn/scout-security/ui';
-import { seedAttackDataForSpace } from '../../../../../utils/seed_attack_data_for_space';
 
 const ENABLE_ALERTS_AND_ATTACKS_ALIGNMENT_SETTING =
   'securitySolution:enableAlertsAndAttacksAlignment';
@@ -16,8 +15,8 @@ spaceTest.describe(
   'Attacks page filters',
   { tag: [...tags.stateful.classic, ...tags.serverless.security.complete] },
   () => {
-    spaceTest.beforeAll(async ({ kbnClient, scoutSpace }) => {
-      await seedAttackDataForSpace({ kbnClient, spaceId: scoutSpace.id });
+    spaceTest.beforeAll(async ({ apiServices }) => {
+      await apiServices.attackDiscovery.seedAttackData();
     });
 
     spaceTest.beforeEach(async ({ browserAuth, scoutSpace }) => {
