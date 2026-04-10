@@ -174,39 +174,37 @@ export const AttacksPageContent = React.memo(({ dataView }: AttacksPageContentPr
           <EuiFlexGroup direction="row" responsive={false} wrap={true}>
             <EuiFlexItem grow={1} style={{ maxWidth: FILTERS_SECTION_WIDTH }}>
               <EuiFlexGroup direction="row" responsive={false}>
-                <EuiFlexItem grow={1}>
-                  <div data-test-subj={ATTACKS_PAGE_ASSIGNEE_FILTER_TEST_ID}>
-                    <FilterByAssigneesPopover
-                      selectedUserIds={assignees}
-                      onSelectionChange={onAssigneesSelectionChange}
-                      compressed={true}
-                    />
-                  </div>
+                <EuiFlexItem grow={1} data-test-subj={ATTACKS_PAGE_ASSIGNEE_FILTER_TEST_ID}>
+                  <FilterByAssigneesPopover
+                    selectedUserIds={assignees}
+                    onSelectionChange={onAssigneesSelectionChange}
+                    compressed={true}
+                  />
                 </EuiFlexItem>
-                <EuiFlexItem grow={1}>
-                  <div data-test-subj={ATTACKS_PAGE_CONNECTOR_FILTER_TEST_ID}>
-                    <ConnectorFilter
-                      aiConnectors={aiConnectors}
-                      connectorNames={aiConnectorNames}
-                      selectedConnectorNames={selectedConnectorNames}
-                      setSelectedConnectorNames={setSelectedConnectorNames}
-                      compressed={true}
-                    />
-                  </div>
+                <EuiFlexItem grow={1} data-test-subj={ATTACKS_PAGE_CONNECTOR_FILTER_TEST_ID}>
+                  <ConnectorFilter
+                    aiConnectors={aiConnectors}
+                    connectorNames={aiConnectorNames}
+                    selectedConnectorNames={selectedConnectorNames}
+                    setSelectedConnectorNames={setSelectedConnectorNames}
+                    compressed={true}
+                  />
                 </EuiFlexItem>
               </EuiFlexGroup>
             </EuiFlexItem>
             <VerticalDivider grow={false} aria-hidden={true} />
-            <EuiFlexItem grow={1} style={{ minWidth: FILTERS_SECTION_WIDTH }}>
-              <div data-test-subj={ATTACKS_PAGE_STANDARD_FILTERS_TEST_ID}>
-                <FiltersSection
-                  dataView={dataView}
-                  pageFilters={pageFilters}
-                  setStatusFilter={setStatusFilter}
-                  setPageFilters={setPageFilters}
-                  setPageFilterHandler={setPageFilterHandler}
-                />
-              </div>
+            <EuiFlexItem
+              grow={1}
+              style={{ minWidth: FILTERS_SECTION_WIDTH }}
+              data-test-subj={ATTACKS_PAGE_STANDARD_FILTERS_TEST_ID}
+            >
+              <FiltersSection
+                dataView={dataView}
+                pageFilters={pageFilters}
+                setStatusFilter={setStatusFilter}
+                setPageFilters={setPageFilters}
+                setPageFilterHandler={setPageFilterHandler}
+              />
             </EuiFlexItem>
           </EuiFlexGroup>
           <EuiSpacer size="l" />

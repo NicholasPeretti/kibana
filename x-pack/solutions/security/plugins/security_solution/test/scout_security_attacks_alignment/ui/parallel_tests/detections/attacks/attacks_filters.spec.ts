@@ -37,6 +37,8 @@ spaceTest.describe(
 
       await expect(detectionsAttackDiscoveryPage.attacksPageSearchBar).toBeVisible();
       await expect(detectionsAttackDiscoveryPage.attacksPageStandardFilters).toBeVisible();
+      await expect(detectionsAttackDiscoveryPage.attacksPageAssigneeFilter).toBeVisible();
+      await expect(detectionsAttackDiscoveryPage.attacksPageConnectorFilter).toBeVisible();
       await expect(detectionsAttackDiscoveryPage.assigneesFilterButton).toBeVisible();
       await expect(detectionsAttackDiscoveryPage.connectorFilterButton).toBeVisible();
 

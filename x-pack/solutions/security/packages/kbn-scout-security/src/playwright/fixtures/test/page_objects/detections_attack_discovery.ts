@@ -23,6 +23,8 @@ const ATTACKS_PAGE_CONTENT_TEST_ID = 'attacks-page-content';
 const ATTACKS_PAGE_ACTIONS_TEST_ID = 'attacks-page-actions';
 const ATTACKS_PAGE_SEARCH_BAR_TEST_ID = 'attacks-page-search-bar';
 const ATTACKS_PAGE_STANDARD_FILTERS_TEST_ID = 'attacks-page-standard-filters';
+const ATTACKS_PAGE_ASSIGNEE_FILTER_TEST_ID = 'attacks-page-assignee-filter';
+const ATTACKS_PAGE_CONNECTOR_FILTER_TEST_ID = 'attacks-page-connector-filter';
 const ATTACKS_KPIS_SECTION_TEST_ID = 'attacks-kpis-section';
 const ATTACKS_SUMMARY_VIEW_TEST_ID = 'summary-view-content';
 const ATTACKS_LIST_PANEL_TEST_ID = 'attacksListPanel';
@@ -47,6 +49,8 @@ export class DetectionsAttackDiscoveryPage {
   public attacksPageActions: Locator;
   public attacksPageSearchBar: Locator;
   public attacksPageStandardFilters: Locator;
+  public attacksPageAssigneeFilter: Locator;
+  public attacksPageConnectorFilter: Locator;
   public attacksKpisSection: Locator;
   public attacksSummaryView: Locator;
   public attacksListPanel: Locator;
@@ -59,7 +63,6 @@ export class DetectionsAttackDiscoveryPage {
   public attackDetailsFlyoutBody: Locator;
   public assigneesFilterButton: Locator;
   public connectorFilterButton: Locator;
-  public expandAttackDetailsButtons: Locator;
   public tableExpandAttackDetailsButtons: Locator;
 
   constructor(private readonly page: ScoutPage, _config: ScoutTestConfig) {
@@ -68,6 +71,12 @@ export class DetectionsAttackDiscoveryPage {
     this.attacksPageSearchBar = this.page.testSubj.locator(ATTACKS_PAGE_SEARCH_BAR_TEST_ID);
     this.attacksPageStandardFilters = this.page.testSubj.locator(
       ATTACKS_PAGE_STANDARD_FILTERS_TEST_ID
+    );
+    this.attacksPageAssigneeFilter = this.page.testSubj.locator(
+      ATTACKS_PAGE_ASSIGNEE_FILTER_TEST_ID
+    );
+    this.attacksPageConnectorFilter = this.page.testSubj.locator(
+      ATTACKS_PAGE_CONNECTOR_FILTER_TEST_ID
     );
     this.attacksKpisSection = this.page.testSubj.locator(ATTACKS_KPIS_SECTION_TEST_ID);
     this.attacksSummaryView = this.page.testSubj.locator(ATTACKS_SUMMARY_VIEW_TEST_ID);
@@ -81,7 +90,6 @@ export class DetectionsAttackDiscoveryPage {
     this.attackDetailsFlyoutBody = this.page.testSubj.locator(ATTACK_DETAILS_FLYOUT_BODY_TEST_ID);
     this.assigneesFilterButton = this.page.testSubj.locator(FILTER_BY_ASSIGNEES_BUTTON_TEST_ID);
     this.connectorFilterButton = this.page.testSubj.locator(CONNECTOR_FILTER_BUTTON_TEST_ID);
-    this.expandAttackDetailsButtons = this.page.testSubj.locator(EXPAND_ATTACK_BUTTON_TEST_ID);
     this.tableExpandAttackDetailsButtons = this.attacksTableSection.locator(
       `[data-test-subj="${EXPAND_ATTACK_BUTTON_TEST_ID}"]`
     );
