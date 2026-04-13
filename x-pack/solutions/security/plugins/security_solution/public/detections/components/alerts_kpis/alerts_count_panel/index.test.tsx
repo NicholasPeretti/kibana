@@ -119,6 +119,16 @@ it('it does NOT render the inspect button when a `chartOptionsContextMenu` is pr
   expect(queryByTestId('inspect-icon-button')).not.toBeInTheDocument();
 });
 
+it('does NOT render the inspect button when `showInspectButton` is false', () => {
+  const { queryByTestId } = render(
+    <TestProviders>
+      <AlertsCountPanel {...defaultProps} showInspectButton={false} />
+    </TestProviders>
+  );
+
+  expect(queryByTestId('inspect-icon-button')).not.toBeInTheDocument();
+});
+
 describe('toggleQuery', () => {
   it('toggles', () => {
     const { getByTestId } = render(

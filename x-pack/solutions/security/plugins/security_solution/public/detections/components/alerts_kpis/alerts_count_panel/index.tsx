@@ -37,6 +37,7 @@ interface AlertsCountPanelProps {
   stackByField0ComboboxRef?: React.RefObject<EuiComboBox<string | number | string[] | undefined>>;
   stackByField1: string | undefined;
   stackByField1ComboboxRef?: React.RefObject<EuiComboBox<string | number | string[] | undefined>>;
+  showInspectButton?: boolean;
   stackByWidth?: number;
   title?: React.ReactNode;
   isExpanded: boolean;
@@ -60,6 +61,7 @@ export const AlertsCountPanel = memo<AlertsCountPanelProps>(
     setStackByField0ComboboxInputRef,
     setStackByField1,
     setStackByField1ComboboxInputRef,
+    showInspectButton,
     stackByField0,
     stackByField0ComboboxRef,
     stackByField1,
@@ -99,7 +101,7 @@ export const AlertsCountPanel = memo<AlertsCountPanelProps>(
             title={title}
             titleSize="s"
             hideSubtitle
-            showInspectButton={chartOptionsContextMenu == null}
+            showInspectButton={showInspectButton ?? chartOptionsContextMenu == null}
             toggleStatus={isExpanded}
             toggleQuery={setIsExpanded}
           >
