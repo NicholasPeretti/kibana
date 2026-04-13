@@ -71,10 +71,7 @@ export const PanelFooter = () => {
       <EuiPanel color="transparent">
         <EuiFlexGroup justifyContent="flexEnd" alignItems="center">
           <EuiFlexItem grow={false}>
-            <AttackAiAssistantButton
-              attack={attack}
-              pathway="attacks_page_flyout_take_action"
-            />
+            <AttackAiAssistantButton attack={attack} pathway="attacks_page_flyout_take_action" />
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <EuiPopover
