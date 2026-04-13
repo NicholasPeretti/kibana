@@ -67,7 +67,7 @@ describe('AttacksCountPanel', () => {
     expect(getByTestId('alerts-count-panel')).toBeInTheDocument();
   });
 
-  it('passes showInspectButton={false} to AlertsCountPanel', () => {
+  it('passes chartOptionsContextMenu to AlertsCountPanel to hide the inspect button', () => {
     const props = {
       filters: [],
       title: 'Test Title',
@@ -79,7 +79,7 @@ describe('AttacksCountPanel', () => {
 
     const mockedAlertsCountPanel = AlertsCountPanel as unknown as jest.Mock;
     expect(mockedAlertsCountPanel).toHaveBeenCalledWith(
-      expect.objectContaining({ showInspectButton: false }),
+      expect.objectContaining({ chartOptionsContextMenu: expect.any(Function) }),
       expect.anything()
     );
   });

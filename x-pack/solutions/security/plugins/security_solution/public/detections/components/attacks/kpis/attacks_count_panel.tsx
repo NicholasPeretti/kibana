@@ -40,7 +40,7 @@ export const AttacksCountPanel = React.memo(
         signalIndexName={signalIndexName}
         title={title}
         inspectTitle={i18n.COUNTS}
-        showInspectButton={false}
+        chartOptionsContextMenu={() => null}
         isExpanded={isExpanded}
         setIsExpanded={setIsExpanded}
         stackByField0={stackBy0}
