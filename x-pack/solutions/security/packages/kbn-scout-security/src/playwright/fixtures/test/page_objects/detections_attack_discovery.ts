@@ -144,7 +144,7 @@ export class DetectionsAttackDiscoveryPage {
   }
 
   async expandDetectionsSection() {
-    await this.detectionsNavItemButton.click();
+    await this.detectionsNavItem.click();
   }
 
   async openScheduleFlyout() {
