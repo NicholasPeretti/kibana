@@ -87,7 +87,6 @@ export const PanelFooter = () => {
                 attack={attack}
                 onActionSuccess={onActionSuccess}
                 closePopover={closePopover}
-                showAiAssistantAction={false}
                 size="s"
                 telemetrySource="attacks_page_flyout_take_action"
               />

@@ -18,17 +18,11 @@ import {
 
 jest.mock(
   '../../detections/components/attacks/table/attack_details/attack_ai_assistant_button',
-  () => {
-    const React = jest.requireActual('react');
-    return {
-      AttackAiAssistantButton: () =>
-        React.createElement(
-          'div',
-          { 'data-test-subj': 'attackAiAssistantButton' },
-          'AttackAiAssistantButton'
-        ),
-    };
-  }
+  () => ({
+    AttackAiAssistantButton: () => (
+      <div data-test-subj="attackAiAssistantButton">{'AttackAiAssistantButton'}</div>
+    ),
+  })
 );
 
 const defaultSearchHit = {
