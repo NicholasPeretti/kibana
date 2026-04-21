@@ -9,7 +9,6 @@ import type { Client } from '@elastic/elasticsearch';
 import { EsArchiver } from '@kbn/es-archiver';
 import { REPO_ROOT } from '@kbn/repo-info';
 import { ALL_SAVED_OBJECT_INDICES } from '@kbn/core-saved-objects-server';
-import { createEsClientForTesting } from '@kbn/test-es-server';
 import type { RoleApiCredentials } from '@kbn/scout-security';
 import { apiTest, tags } from '@kbn/scout-security';
 import { expect } from '@kbn/scout-security/api';
@@ -31,19 +30,6 @@ const ES_ARCHIVE_PATH =
 const NOTES_TIMELINE_ID = '6484cc90-126e-11ec-83d2-db1096c73738';
 const SAVED_QUERY_TIMELINE_ID = '8dc70950-1012-11ec-9ad3-2d7c6600c0f7';
 
-interface ScoutConfigLike {
-  metadata?: {
-    config?: {
-      servers?: {
-        elasticsearch?: {
-          username?: string;
-          password?: string;
-        };
-      };
-    };
-  };
-}
-
 interface TimelineWithoutSavedQueryId {
   [timelineSavedObjectType]: TimelineWithoutExternalRefs;
 }
@@ -62,21 +48,6 @@ interface TimelineResponse {
   notes?: Array<{ eventId?: string; timelineId?: string }>;
   pinnedEventsSaveObject?: Array<{ eventId?: string; timelineId?: string }>;
 }
-
-const getEsServiceCredentials = (
-  config: ScoutConfigLike
-): { username: string; password: string } => {
-  const esConfig = config.metadata?.config?.servers?.elasticsearch;
-
-  if (!esConfig?.username || !esConfig?.password) {
-    throw new Error('Unable to read Elasticsearch service credentials from Scout config metadata.');
-  }
-
-  return {
-    username: esConfig.username,
-    password: esConfig.password,
-  };
-};
 
 const getSavedObjectsByIds = async <T>({
   esClient,
@@ -117,22 +88,23 @@ const getSavedObjectsByIds = async <T>({
 
 apiTest.describe('Timeline migrations 7.16.0', { tag: [...tags.stateful.security] }, () => {
   let adminApiCredentials: RoleApiCredentials;
-  let scopedEsClient: Client;
+  // The built-in Scout `esArchiver` fixture is not usable here for two reasons:
+  //   1. It is constructed with `dataOnly: true`, so it will not (re)create index
+  //      mappings from the archive. This suite loads a legacy `.kibana_1` archive
+  //      whose saved-object mappings must be restored so Kibana's SO migration
+  //      framework can be exercised against pre-8.0 timeline documents.
+  //   2. The fixture only exposes `loadIfNeeded` and does not expose `unload`, but
+  //      the legacy `.kibana` documents loaded here must be cleaned up in
+  //      `afterAll` to avoid leaking stale SO shapes into other suites.
+  // We therefore build a local (non-`dataOnly`) `EsArchiver` scoped to this suite.
   let scopedEsArchiver: EsArchiver;
 
-  apiTest.beforeAll(async ({ requestAuth, kbnClient, config, log }) => {
+  apiTest.beforeAll(async ({ esClient, kbnClient, requestAuth, log }) => {
     adminApiCredentials = await requestAuth.getApiKey('admin');
-    const { username, password } = getEsServiceCredentials(config);
-
-    scopedEsClient = createEsClientForTesting({
-      esUrl: config.hosts.elasticsearch,
-      isCloud: config.isCloud,
-      authOverride: { username, password },
-    });
 
     scopedEsArchiver = new EsArchiver({
       log,
-      client: scopedEsClient,
+      client: esClient,
       baseDir: REPO_ROOT,
       kbnClient,
     });
@@ -142,7 +114,6 @@ apiTest.describe('Timeline migrations 7.16.0', { tag: [...tags.stateful.security
 
   apiTest.afterAll(async () => {
     await scopedEsArchiver.unload(ES_ARCHIVE_PATH);
-    await scopedEsClient.close();
   });
 
   apiTest('removes notes timelineId in saved objects', async ({ apiClient, esClient }) => {
@@ -195,9 +166,9 @@ apiTest.describe('Timeline migrations 7.16.0', { tag: [...tags.stateful.security
 
   apiTest(
     'removes savedQueryId in saved object and preserves response field',
-    async ({ apiClient }) => {
+    async ({ apiClient, esClient }) => {
       const timelines = await getSavedObjectsByIds<TimelineWithoutSavedQueryId>({
-        esClient: scopedEsClient,
+        esClient,
         savedObjectType: timelineSavedObjectType,
         ids: ['siem-ui-timeline:8dc70950-1012-11ec-9ad3-2d7c6600c0f7'],
       });

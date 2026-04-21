@@ -5,13 +5,11 @@
  * 2.0.
  */
 
-import type { Client } from '@elastic/elasticsearch';
 import { EsArchiver } from '@kbn/es-archiver';
 import { REPO_ROOT } from '@kbn/repo-info';
 import type { RoleApiCredentials } from '@kbn/scout-security';
 import { apiTest, tags } from '@kbn/scout-security';
 import { expect } from '@kbn/scout-security/api';
-import { createEsClientForTesting } from '@kbn/test-es-server';
 
 const SPACE_ID = 'awesome-space';
 const RESOLVE_PATH = `/s/${SPACE_ID}/api/timeline/resolve`;
@@ -23,54 +21,28 @@ const ES_ARCHIVE_PATH =
 const KBN_ARCHIVE_PATH =
   'x-pack/solutions/security/test/fixtures/kbn_archives/timelines/7.15.0_space';
 
-interface ScoutConfigLike {
-  metadata?: {
-    config?: {
-      servers?: {
-        elasticsearch?: {
-          username?: string;
-          password?: string;
-        };
-      };
-    };
-  };
-}
-
-const getEsServiceCredentials = (
-  config: ScoutConfigLike
-): { username: string; password: string } => {
-  const esConfig = config.metadata?.config?.servers?.elasticsearch;
-
-  if (!esConfig?.username || !esConfig?.password) {
-    throw new Error('Unable to read Elasticsearch service credentials from Scout config metadata.');
-  }
-
-  return {
-    username: esConfig.username,
-    password: esConfig.password,
-  };
-};
-
 apiTest.describe(
   'Timeline migrations 8.0 id migration',
   { tag: [...tags.stateful.security] },
   () => {
     let adminApiCredentials: RoleApiCredentials;
-    let scopedEsClient: Client;
+    // The built-in Scout `esArchiver` fixture is not usable here for two reasons:
+    //   1. It is constructed with `dataOnly: true`, so it will not (re)create index
+    //      mappings from the archive. This suite loads a legacy `.kibana_1` archive
+    //      whose saved-object mappings must be restored so Kibana's SO migration
+    //      framework can be exercised against pre-8.0 timeline documents.
+    //   2. The fixture only exposes `loadIfNeeded` and does not expose `unload`, but
+    //      the legacy `.kibana` documents loaded here must be cleaned up in
+    //      `afterAll` to avoid leaking stale SO shapes into other suites.
+    // We therefore build a local (non-`dataOnly`) `EsArchiver` scoped to this suite.
     let scopedEsArchiver: EsArchiver;
 
-    apiTest.beforeAll(async ({ requestAuth, kbnClient, config, log }) => {
+    apiTest.beforeAll(async ({ esClient, kbnClient, requestAuth, log }) => {
       adminApiCredentials = await requestAuth.getApiKey('admin');
-      const { username, password } = getEsServiceCredentials(config);
-      scopedEsClient = createEsClientForTesting({
-        esUrl: config.hosts.elasticsearch,
-        isCloud: config.isCloud,
-        authOverride: { username, password },
-      });
 
       scopedEsArchiver = new EsArchiver({
         log,
-        client: scopedEsClient,
+        client: esClient,
         baseDir: REPO_ROOT,
         kbnClient,
       });
@@ -88,7 +60,6 @@ apiTest.describe(
       await kbnClient.importExport.unload(KBN_ARCHIVE_PATH, { space: SPACE_ID });
       await kbnClient.spaces.delete(SPACE_ID);
       await scopedEsArchiver.unload(ES_ARCHIVE_PATH);
-      await scopedEsClient.close();
     });
 
     apiTest('returns aliasMatch outcome and resolved timeline payload', async ({ apiClient }) => {
