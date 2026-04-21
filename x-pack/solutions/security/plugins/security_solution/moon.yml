@@ -295,7 +295,6 @@ dependsOn:
   - '@kbn/workflows-management-plugin'
   - '@kbn/core-application-browser-mocks'
   - '@kbn/es-archiver'
-  - '@kbn/test-es-server'
 tags:
   - plugin
   - prod
