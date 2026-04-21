@@ -53,7 +53,7 @@ paths:
                         Enables a markdown syntax used to render pivot fields,
                         for example `{{ user.name james }}`. When disabled, the
                         same example would be rendered as `james`. This is
-                        primarily used for Attack discovery views within Kibana.
+                        primarily used for Attack Discovery views within Kibana.
                         Defaults to `false`.
                       example: false
                       type: boolean
@@ -132,7 +132,7 @@ paths:
             application/json:
               example:
                 error: Bad Request
-                message: Invalid request parameters
+                message: Invalid request parameters.
                 status_code: 400
               schema:
                 type: object
@@ -145,7 +145,7 @@ paths:
                     description: >-
                       Human-readable error message describing what went wrong
                       with the bulk update request
-                    example: Invalid request parameters
+                    example: Invalid request parameters.
                     type: string
                   status_code:
                     description: HTTP status code
@@ -477,7 +477,7 @@ paths:
                   field: process.name
               apiConfig:
                 actionTypeId: .gen-ai
-                connectorId: example-connector-id
+                connectorId: 12345678-1234-1234-1234-123456789012
               connectorName: GPT-5 Chat
               end: now
               replacements: {}
@@ -511,7 +511,7 @@ paths:
             application/json:
               example:
                 error: Bad Request
-                message: Invalid request parameters
+                message: Invalid request parameters.
                 status_code: 400
               schema:
                 type: object
@@ -522,7 +522,7 @@ paths:
                     type: string
                   message:
                     description: Human-readable error message describing what went wrong
-                    example: Invalid request parameters
+                    example: Invalid request parameters.
                     type: string
                   status_code:
                     description: HTTP status code
@@ -1470,7 +1470,7 @@ paths:
                 "size": 100,
                 "subAction": "invokeAI",
                 "apiConfig": {
-                  "connectorId": "example-connector-id",
+                  "connectorId": "12345678-1234-1234-1234-123456789012",
                   "actionTypeId": ".gen-ai"
                 },
                 "connectorName": "GPT-5 Chat",
@@ -1579,13 +1579,13 @@ paths:
   /api/attack_discovery/generations/{execution_uuid}:
     get:
       description: >-
-        Returns a specific Attack discovery generation, including all generated
+        Returns a specific Attack Discovery generation, including all generated
         Attack discoveries and associated metadata, including execution status
         and statistics.
       operationId: GetAttackDiscoveryGeneration
       parameters:
         - description: >-
-            The unique identifier for the Attack discovery generation execution.
+            The unique identifier for the Attack Discovery generation execution.
             This UUID is returned at the start of an Attack discovery
             generation.
           example: 2e13f386-46cf-4d65-9e2b-68609e132ba5
@@ -1658,7 +1658,7 @@ paths:
             application/json:
               example:
                 error: Bad Request
-                message: Invalid request parameters
+                message: Invalid request parameters.
                 status_code: 400
               schema:
                 type: object
@@ -1671,7 +1671,7 @@ paths:
                     description: >-
                       Human-readable error message describing what went wrong
                       with the request
-                    example: Invalid request parameters
+                    example: Invalid request parameters.
                     type: string
                   status_code:
                     description: HTTP status code
@@ -1683,7 +1683,7 @@ paths:
                   - message
           description: Bad Request response.
       summary: >-
-        Get a single Attack discovery generation, including its discoveries and
+        Get a single Attack Discovery generation, including its discoveries and
         (optional) generation metadata
       tags:
         - Security Attack discovery API
@@ -1705,7 +1705,7 @@ paths:
       operationId: PostAttackDiscoveryGenerationsDismiss
       parameters:
         - description: >-
-            The unique identifier for the Attack discovery generation execution.
+            The unique identifier for the Attack Discovery generation execution.
             This UUID is returned when an attack discovery generation is created
             and can be found in generation responses.
           example: 46b218d5-535d-4329-be56-d0f6af6986b7
@@ -1830,7 +1830,7 @@ paths:
             application/json:
               example:
                 error: Bad Request
-                message: Invalid request parameters
+                message: Invalid request parameters.
                 status_code: 400
               schema:
                 type: object
@@ -1843,7 +1843,7 @@ paths:
                     description: >-
                       Human-readable error message describing what went wrong
                       with the request.
-                    example: Invalid request parameters
+                    example: Invalid request parameters.
                     type: string
                   status_code:
                     description: HTTP status code indicating the type of client error
@@ -1868,7 +1868,7 @@ paths:
   /api/attack_discovery/schedules:
     post:
       description: >-
-        Creates a new Attack discovery schedule that analyzes security alerts at
+        Creates a new Attack Discovery schedule that analyzes security alerts at
         specified intervals. The schedule defines when and how Attack discovery
         analysis should run, including which alerts to analyze, which AI
         connector to use, and what actions to take when discoveries are found.
@@ -1894,7 +1894,7 @@ paths:
             schema:
               $ref: '#/components/schemas/AttackDiscoveryApiScheduleCreateProps'
         description: >-
-          Attack discovery schedule configuration including name, parameters,
+          Attack Discovery schedule configuration including name, parameters,
           schedule interval, and actions
         required: true
       responses:
@@ -1923,22 +1923,22 @@ paths:
                 updated_by: elastic
               schema:
                 $ref: '#/components/schemas/AttackDiscoveryApiSchedule'
-          description: The Attack discovery schedule was successfully created.
+          description: The Attack Discovery schedule was successfully created.
         '400':
           content:
             application/json:
               example:
                 error: Bad Request
-                message: Invalid request parameters
+                message: Invalid request parameters.
                 status_code: 400
               schema:
                 $ref: '#/components/schemas/AttackDiscoveryGenericError'
           description: Bad Request response.
-      summary: Create Attack discovery schedule
+      summary: Create Attack Discovery schedule
       tags:
         - Security Attack discovery API
       x-code-samples:
-        - label: Create an Attack discovery schedule
+        - label: Create an Attack Discovery schedule
           lang: curl
           source: |
             curl \
@@ -1982,7 +1982,7 @@ paths:
   /api/attack_discovery/schedules/_find:
     get:
       description: >-
-        Finds Attack discovery schedules that match the search criteria.
+        Find Attack Discovery schedules that match the search criteria.
         Supports pagination and sorting by various fields.
       operationId: FindAttackDiscoverySchedules
       parameters:
@@ -1994,7 +1994,7 @@ paths:
           schema:
             type: number
         - description: >-
-            Number of Attack discovery schedules to return per page (used for
+            Number of Attack Discovery schedules to return per page (used for
             pagination). Defaults to 10.
           example: 10
           in: query
@@ -2055,7 +2055,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    description: Array of matched Attack discovery schedule objects.
+                    description: Array of matched Attack Discovery schedule objects.
                     items:
                       $ref: '#/components/schemas/AttackDiscoveryApiSchedule'
                     type: array
@@ -2067,7 +2067,7 @@ paths:
                     type: number
                   total:
                     description: >-
-                      Total number of Attack discovery schedules matching the
+                      Total number of Attack Discovery schedules matching the
                       query (across all pages).
                     type: number
                 required:
@@ -2081,7 +2081,7 @@ paths:
             application/json:
               example:
                 error: Bad Request
-                message: Invalid request payload
+                message: Invalid request payload.
                 status_code: 400
               schema:
                 type: object
@@ -2092,14 +2092,14 @@ paths:
                     type: string
                   message:
                     description: Human-readable error message
-                    example: Invalid request payload
+                    example: Invalid request payload.
                     type: string
                   status_code:
                     description: HTTP status code
                     example: 400
                     type: number
           description: Bad Request response.
-      summary: Finds Attack discovery schedules that match the search criteria
+      summary: Find Attack Discovery schedules that match the search criteria
       tags:
         - Security Attack discovery API
       x-code-samples:
@@ -2113,7 +2113,7 @@ paths:
   /api/attack_discovery/schedules/{id}:
     delete:
       description: >-
-        Permanently deletes an Attack discovery schedule and all associated
+        Permanently deletes an Attack Discovery schedule and all associated
         configuration.
       operationId: DeleteAttackDiscoverySchedules
       parameters:
@@ -2151,16 +2151,16 @@ paths:
             application/json:
               example:
                 error: Bad Request
-                message: Invalid request parameters
+                message: Invalid request parameters.
                 status_code: 400
               schema:
                 $ref: '#/components/schemas/AttackDiscoveryGenericError'
           description: Bad Request response.
-      summary: Delete Attack discovery schedule
+      summary: Delete Attack Discovery schedule
       tags:
         - Security Attack discovery API
       x-code-samples:
-        - label: Delete an Attack discovery schedule
+        - label: Delete an Attack Discovery schedule
           lang: curl
           source: |
             curl \
@@ -2169,7 +2169,7 @@ paths:
              --header "Content-Type: application/json"
     get:
       description: >-
-        Retrieves a specific Attack discovery schedule by its unique identifier.
+        Retrieves a specific Attack Discovery schedule by its unique identifier.
         Returns complete schedule configuration including parameters, interval
         settings, associated actions, and execution history.
       operationId: GetAttackDiscoverySchedules
@@ -2222,16 +2222,16 @@ paths:
             application/json:
               example:
                 error: Bad Request
-                message: Invalid request parameters
+                message: Invalid request parameters.
                 status_code: 400
               schema:
                 $ref: '#/components/schemas/AttackDiscoveryGenericError'
           description: Bad Request response.
-      summary: Get Attack discovery schedule by ID
+      summary: Get Attack Discovery schedule by ID
       tags:
         - Security Attack discovery API
       x-code-samples:
-        - label: Get an Attack discovery schedule by ID
+        - label: Get an Attack Discovery schedule by ID
           lang: curl
           source: |
             curl \
@@ -2240,7 +2240,7 @@ paths:
              --header "Content-Type: application/json"
     put:
       description: >-
-        Updates an existing Attack discovery schedule with new configuration.
+        Updates an existing Attack Discovery schedule with new configuration.
         All schedule properties can be modified including name, parameters,
         interval, and actions. The update operation replaces the entire schedule
         configuration with the provided values.
@@ -2276,7 +2276,7 @@ paths:
             schema:
               $ref: '#/components/schemas/AttackDiscoveryApiScheduleUpdateProps'
         description: >-
-          Updated Attack discovery schedule configuration. All fields are
+          Updated Attack Discovery schedule configuration. All fields are
           required as this replaces the entire schedule configuration.
         required: true
       responses:
@@ -2313,16 +2313,16 @@ paths:
             application/json:
               example:
                 error: Bad Request
-                message: Invalid request parameters
+                message: Invalid request parameters.
                 status_code: 400
               schema:
                 $ref: '#/components/schemas/AttackDiscoveryGenericError'
           description: Bad Request response.
-      summary: Update Attack discovery schedule
+      summary: Update Attack Discovery schedule
       tags:
         - Security Attack discovery API
       x-code-samples:
-        - label: Update an Attack discovery schedule
+        - label: Update an Attack Discovery schedule
           lang: curl
           source: |
             curl \
@@ -2350,7 +2350,7 @@ paths:
   /api/attack_discovery/schedules/{id}/_disable:
     post:
       description: >-
-        Disables an Attack discovery schedule, preventing it from running
+        Disables an Attack Discovery schedule, preventing it from running
         according to its configured interval. The schedule configuration is
         preserved and can be re-enabled later. Any currently running executions
         will complete, but no new executions will be started.
@@ -2390,16 +2390,16 @@ paths:
             application/json:
               example:
                 error: Bad Request
-                message: Invalid request parameters
+                message: Invalid request parameters.
                 status_code: 400
               schema:
                 $ref: '#/components/schemas/AttackDiscoveryGenericError'
           description: Bad Request response.
-      summary: Disable Attack discovery schedule
+      summary: Disable Attack Discovery schedule
       tags:
         - Security Attack discovery API
       x-code-samples:
-        - label: Disable an Attack discovery schedule
+        - label: Disable an Attack Discovery schedule
           lang: curl
           source: |
             curl \
@@ -2409,7 +2409,7 @@ paths:
   /api/attack_discovery/schedules/{id}/_enable:
     post:
       description: >-
-        Enables a previously disabled Attack discovery schedule, allowing it to
+        Enables a previously disabled Attack Discovery schedule, allowing it to
         run according to its configured interval. Once enabled, the schedule
         will begin executing at the next scheduled time based on its interval
         configuration.
@@ -2449,16 +2449,16 @@ paths:
             application/json:
               example:
                 error: Bad Request
-                message: Invalid request parameters
+                message: Invalid request parameters.
                 status_code: 400
               schema:
                 $ref: '#/components/schemas/AttackDiscoveryGenericError'
           description: Bad Request response.
-      summary: Enable Attack discovery schedule
+      summary: Enable Attack Discovery schedule
       tags:
         - Security Attack discovery API
       x-code-samples:
-        - label: Enable an Attack discovery schedule
+        - label: Enable an Attack Discovery schedule
           lang: curl
           source: |
             curl \
@@ -2924,7 +2924,7 @@ components:
         - actions
     AttackDiscoveryFindSortField:
       description: >-
-        Allowed field names to sort Attack discovery results by. Clients should
+        Allowed field names to sort Attack Discovery results by. Clients should
         only pass one of the listed values.
       enum:
         - '@timestamp'
@@ -3073,7 +3073,7 @@ components:
         - size
         - subAction
     AttackDiscoveryGenericError:
-      description: Generic error response for Attack discovery schedule operations
+      description: Generic error response for Attack Discovery schedule operations
       type: object
       properties:
         error:
@@ -3082,7 +3082,7 @@ components:
           type: string
         message:
           description: Human-readable error message describing what went wrong
-          example: Invalid request parameters
+          example: Invalid request parameters.
           type: string
         status_code:
           description: HTTP status code

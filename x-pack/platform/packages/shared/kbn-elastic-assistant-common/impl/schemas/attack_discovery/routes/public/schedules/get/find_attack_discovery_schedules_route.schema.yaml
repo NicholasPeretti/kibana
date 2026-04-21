@@ -16,8 +16,8 @@ paths:
              --header "Content-Type: application/json"
       x-labels: [ess, serverless]
       operationId: FindAttackDiscoverySchedules
-      summary: Finds Attack discovery schedules that match the search criteria
-      description: Finds Attack discovery schedules that match the search criteria. Supports pagination and sorting by various fields.
+      summary: Find Attack Discovery schedules that match the search criteria
+      description: Find Attack Discovery schedules that match the search criteria. Supports pagination and sorting by various fields.
       parameters:
         - name: page
           description: Page number to return (used for pagination). Defaults to 1.
@@ -27,7 +27,7 @@ paths:
             type: number
           example: 1
         - name: per_page
-          description: Number of Attack discovery schedules to return per page (used for pagination). Defaults to 10.
+          description: Number of Attack Discovery schedules to return per page (used for pagination). Defaults to 10.
           in: query
           required: false
           schema:
@@ -71,10 +71,10 @@ paths:
                     description: Number of items requested per page.
                   total:
                     type: number
-                    description: Total number of Attack discovery schedules matching the query (across all pages).
+                    description: Total number of Attack Discovery schedules matching the query (across all pages).
                   data:
                     type: array
-                    description: Array of matched Attack discovery schedule objects.
+                    description: Array of matched Attack Discovery schedule objects.
                     items:
                       $ref: '../schedules_api.schema.yaml#/components/schemas/AttackDiscoveryApiSchedule'
               example:
@@ -119,8 +119,8 @@ paths:
                   message:
                     type: string
                     description: Human-readable error message
-                    example: "Invalid request payload"
+                    example: "Invalid request payload."
               example:
                 status_code: 400
                 error: "Bad Request"
-                message: "Invalid request payload"
+                message: "Invalid request payload."

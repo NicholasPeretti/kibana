@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Get attack discovery generations API endpoint
+  title: Get Attack Discovery generations API endpoint
   version: '2023-10-31'
 paths:
   /api/attack_discovery/generations:
@@ -16,8 +16,8 @@ paths:
              --header "Content-Type: application/json"
       x-labels: [ess, serverless]
       operationId: GetAttackDiscoveryGenerations
-      description: Get the latest attack discovery generations metadata (that are not dismissed) for the current user. This endpoint retrieves generation metadata including execution status and statistics for Attack discovery generations.
-      summary: Get the latest attack discovery generations metadata for the current user
+      description: Get the latest Attack Discovery generations metadata (that are not dismissed) for the current user. This endpoint retrieves generation metadata including execution status and statistics for Attack Discovery generations.
+      summary: Get the latest Attack Discovery generations metadata for the current user
       parameters:
         - name: end
           in: query
@@ -54,7 +54,7 @@ paths:
                 properties:
                   generations:
                     type: array
-                    description: List of attack discovery generations
+                    description: List of Attack Discovery generations
                     items:
                       $ref: '../../../generation.schema.yaml#/components/schemas/AttackDiscoveryGeneration'
               example:
