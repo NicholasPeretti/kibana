@@ -36,7 +36,7 @@ paths:
             items:
               type: string
         - name: 'enable_field_rendering'
-          description: Enables a markdown syntax used to render pivot fields, for example `{{ user.name james }}`. When disabled, the same example would be rendered as `james`. This is primarily used for Attack discovery views within Kibana. Defaults to `false`.
+          description: Enables a markdown syntax used to render pivot fields, for example `{{ user.name james }}`. When disabled, the same example would be rendered as `james`. This is primarily used for Attack Discovery views within Kibana. Defaults to `false`.
           in: query
           required: false
           schema:
@@ -226,6 +226,6 @@ components:
   schemas:
     AttackDiscoveryFindSortField:
       type: string
-      description: Allowed field names to sort Attack discovery results by. Clients should only pass one of the listed values.
+      description: Allowed field names to sort Attack Discovery results by. Clients should only pass one of the listed values.
       enum:
         - '@timestamp'

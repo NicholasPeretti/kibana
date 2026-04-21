@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Post Attack discovery generate API endpoint
+  title: Post Attack Discovery generate API endpoint
   version: '2023-10-31'
 paths:
   /api/attack_discovery/_generate:
@@ -940,7 +940,7 @@ paths:
                 "size": 100,
                 "subAction": "invokeAI",
                 "apiConfig": {
-                  "connectorId": "example-connector-id",
+                  "connectorId": "12345678-1234-1234-1234-123456789012",
                   "actionTypeId": ".gen-ai"
                 },
                 "connectorName": "GPT-5 Chat",
@@ -973,7 +973,7 @@ paths:
                   allowed: true
                   anonymized: false
               apiConfig:
-                connectorId: "example-connector-id"
+                connectorId: "12345678-1234-1234-1234-123456789012"
                 actionTypeId: ".gen-ai"
               connectorName: "GPT-5 Chat"
               replacements: {}
@@ -1018,7 +1018,7 @@ paths:
                   message:
                     type: string
                     description: Human-readable error message describing what went wrong
-                    example: "Invalid request parameters"
+                    example: "Invalid request parameters."
                 required:
                   - status_code
                   - error
@@ -1026,6 +1026,6 @@ paths:
               example:
                 status_code: 400
                 error: "Bad Request"
-                message: "Invalid request parameters"
+                message: "Invalid request parameters."
 components:
   x-codegen-enabled: true
