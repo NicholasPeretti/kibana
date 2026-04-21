@@ -58,7 +58,7 @@ paths:
                       example: false
                       type: boolean
                     ids:
-                      description: Array of Attack discovery IDs to update
+                      description: Array of Attack Discovery IDs to update
                       example:
                         - >-
                           c0c8a8bbb4a6561856a974ee9e461f0c82e673a1f0d83f86c5a8d80fc8de4c4f
@@ -118,7 +118,7 @@ paths:
                 properties:
                   data:
                     description: >-
-                      Array of updated Attack discovery alert objects. Each item
+                      Array of updated Attack Discovery alert objects. Each item
                       includes the applied modifications from the bulk update
                       request.
                     items:
@@ -209,7 +209,7 @@ paths:
         - description: >-
             Enables a markdown syntax used to render pivot fields, for example
             `{{ user.name james }}`. When disabled, the same example would be
-            rendered as `james`. This is primarily used for Attack discovery
+            rendered as `james`. This is primarily used for Attack Discovery
             views within Kibana. Defaults to `false`.
           example: false
           in: query
@@ -1480,9 +1480,9 @@ paths:
   /api/attack_discovery/generations:
     get:
       description: >-
-        Get the latest attack discovery generations metadata (that are not
+        Get the latest Attack Discovery generations metadata (that are not
         dismissed) for the current user. This endpoint retrieves generation
-        metadata including execution status and statistics for Attack discovery
+        metadata including execution status and statistics for Attack Discovery
         generations.
       operationId: GetAttackDiscoveryGenerations
       parameters:
@@ -1533,7 +1533,7 @@ paths:
                 type: object
                 properties:
                   generations:
-                    description: List of attack discovery generations
+                    description: List of Attack Discovery generations
                     items:
                       $ref: '#/components/schemas/AttackDiscoveryGeneration'
                     type: array
@@ -1564,7 +1564,7 @@ paths:
                     type: number
           description: Bad Request response.
       summary: >-
-        Get the latest attack discovery generations metadata for the current
+        Get the latest Attack Discovery generations metadata for the current
         user
       tags:
         - Security Attack discovery API
@@ -1586,7 +1586,7 @@ paths:
       parameters:
         - description: >-
             The unique identifier for the Attack Discovery generation execution.
-            This UUID is returned at the start of an Attack discovery
+            This UUID is returned at the start of an Attack Discovery
             generation.
           example: 2e13f386-46cf-4d65-9e2b-68609e132ba5
           in: path
@@ -1597,7 +1597,7 @@ paths:
         - description: >-
             Enables a markdown syntax used to render pivot fields, for example
             `{{ user.name james }}`. When disabled, the same example would be
-            rendered as `james`. This is primarily used for Attack discovery
+            rendered as `james`. This is primarily used for Attack Discovery
             views within Kibana. Defaults to `false`.
           example: false
           in: query
@@ -1698,15 +1698,15 @@ paths:
   /api/attack_discovery/generations/{execution_uuid}/_dismiss:
     post:
       description: >-
-        Dismisses an attack discovery generation for the current user,
-        indicating that it's status should not be reported in the UI. This sets
+        Dismisses an Attack Discovery generation for the current user,
+        indicating that its status should not be reported in the UI. This sets
         the generation's status to "dismissed" and affects how the generation
         appears in subsequent queries.
       operationId: PostAttackDiscoveryGenerationsDismiss
       parameters:
         - description: >-
             The unique identifier for the Attack Discovery generation execution.
-            This UUID is returned when an attack discovery generation is created
+            This UUID is returned when an Attack Discovery generation is created
             and can be found in generation responses.
           example: 46b218d5-535d-4329-be56-d0f6af6986b7
           in: path
@@ -1854,7 +1854,7 @@ paths:
                   - error
                   - message
           description: Bad Request response.
-      summary: Dismiss an attack discovery generation
+      summary: Dismiss an Attack Discovery generation
       tags:
         - Security Attack discovery API
       x-code-samples:
@@ -1869,7 +1869,7 @@ paths:
     post:
       description: >-
         Creates a new Attack Discovery schedule that analyzes security alerts at
-        specified intervals. The schedule defines when and how Attack discovery
+        specified intervals. The schedule defines when and how Attack Discovery
         analysis should run, including which alerts to analyze, which AI
         connector to use, and what actions to take when discoveries are found.
       operationId: CreateAttackDiscoverySchedules
@@ -1982,8 +1982,8 @@ paths:
   /api/attack_discovery/schedules/_find:
     get:
       description: >-
-        Find Attack Discovery schedules that match the search criteria.
-        Supports pagination and sorting by various fields.
+        Find Attack Discovery schedules that match the search criteria. Supports
+        pagination and sorting by various fields.
       operationId: FindAttackDiscoverySchedules
       parameters:
         - description: Page number to return (used for pagination). Defaults to 1.
@@ -2665,11 +2665,11 @@ components:
         - timestamp
         - title
     AttackDiscoveryApiSchedule:
-      description: An attack discovery schedule
+      description: An Attack Discovery schedule
       type: object
       properties:
         actions:
-          description: The attack discovery schedule actions
+          description: The Attack Discovery schedule actions
           items:
             $ref: '#/components/schemas/AttackDiscoveryApiScheduleAction'
           type: array
@@ -2684,20 +2684,20 @@ components:
           description: Indicates whether the schedule is enabled
           type: boolean
         id:
-          description: UUID of attack discovery schedule
+          description: UUID of Attack Discovery schedule
           type: string
         last_execution:
           $ref: '#/components/schemas/AttackDiscoveryApiScheduleExecution'
-          description: The attack discovery schedule last execution summary
+          description: The Attack Discovery schedule last execution summary
         name:
           description: The name of the schedule
           type: string
         params:
           $ref: '#/components/schemas/AttackDiscoveryApiScheduleParams'
-          description: The attack discovery schedule configuration parameters
+          description: The Attack Discovery schedule configuration parameters
         schedule:
           $ref: '#/components/schemas/IntervalApiSchedule'
-          description: The attack discovery schedule interval
+          description: The Attack Discovery schedule interval
         updated_at:
           description: The date the schedule was updated
           format: date-time
@@ -2772,11 +2772,11 @@ components:
       pattern: ^[1-9]\d*[smhd]$
       type: string
     AttackDiscoveryApiScheduleCreateProps:
-      description: An attack discovery schedule create properties
+      description: An Attack Discovery schedule create properties
       type: object
       properties:
         actions:
-          description: The attack discovery schedule actions
+          description: The Attack Discovery schedule actions
           items:
             $ref: '#/components/schemas/AttackDiscoveryApiScheduleAction'
           type: array
@@ -2788,16 +2788,16 @@ components:
           type: string
         params:
           $ref: '#/components/schemas/AttackDiscoveryApiScheduleParams'
-          description: The attack discovery schedule configuration parameters
+          description: The Attack Discovery schedule configuration parameters
         schedule:
           $ref: '#/components/schemas/IntervalApiSchedule'
-          description: The attack discovery schedule interval
+          description: The Attack Discovery schedule interval
       required:
         - name
         - params
         - schedule
     AttackDiscoveryApiScheduleExecution:
-      description: An attack discovery schedule execution information
+      description: An Attack Discovery schedule execution information
       type: object
       properties:
         date:
@@ -2817,7 +2817,7 @@ components:
         - status
         - last_duration
     AttackDiscoveryApiScheduleExecutionStatus:
-      description: An attack discovery schedule execution status
+      description: An Attack Discovery schedule execution status
       enum:
         - ok
         - active
@@ -2849,7 +2849,7 @@ components:
         - id
         - params
     AttackDiscoveryApiScheduleParams:
-      description: An attack discovery schedule params
+      description: An Attack Discovery schedule params
       type: object
       properties:
         alerts_index_pattern:
@@ -2900,11 +2900,11 @@ components:
         - id
         - params
     AttackDiscoveryApiScheduleUpdateProps:
-      description: An attack discovery schedule update properties
+      description: An Attack Discovery schedule update properties
       type: object
       properties:
         actions:
-          description: The attack discovery schedule actions
+          description: The Attack Discovery schedule actions
           items:
             $ref: '#/components/schemas/AttackDiscoveryApiScheduleAction'
           type: array
@@ -2913,10 +2913,10 @@ components:
           type: string
         params:
           $ref: '#/components/schemas/AttackDiscoveryApiScheduleParams'
-          description: The attack discovery schedule configuration parameters
+          description: The Attack Discovery schedule configuration parameters
         schedule:
           $ref: '#/components/schemas/IntervalApiSchedule'
-          description: The attack discovery schedule interval
+          description: The Attack Discovery schedule interval
       required:
         - name
         - params
@@ -3091,7 +3091,7 @@ components:
     Filters:
       description: >-
         The filter array used to define the conditions for when alerts are
-        selected as an attack discovery context. Defaults to an empty array.
+        selected as an Attack Discovery context. Defaults to an empty array.
       items: {}
       type: array
     IntervalApiSchedule:
