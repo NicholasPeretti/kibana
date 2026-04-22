@@ -52,6 +52,7 @@ export const collectUniqueTags = (
 export const getServerRunFlagsFromTags = (testTags: string[]): string[] => {
   const supportedArchDomainCombos: [ScoutTargetArch, ScoutTargetDomain][] = [
     ['stateful', 'classic'],
+    ['stateful', 'security_complete'],
     ['serverless', 'search'],
     ['serverless', 'observability_complete'],
     // ['serverless', 'observability_logs_essentials'],
