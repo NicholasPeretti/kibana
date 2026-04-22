@@ -48,6 +48,15 @@ apiTest.describe(
       });
 
       await scopedEsArchiver.loadIfNeeded(ES_ARCHIVE_PATH);
+      // Clean up a leftover space from an interrupted prior run to avoid create() 409 conflicts.
+      try {
+        await kbnClient.spaces.delete(SPACE_ID);
+      } catch (error) {
+        const statusCode = (error as { response?: { statusCode?: number } }).response?.statusCode;
+        if (statusCode !== 404) {
+          throw error;
+        }
+      }
       await kbnClient.spaces.create({
         id: SPACE_ID,
         name: SPACE_ID,
