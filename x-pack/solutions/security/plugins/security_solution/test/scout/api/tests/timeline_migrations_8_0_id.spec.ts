@@ -21,6 +21,10 @@ const ES_ARCHIVE_PATH =
 const KBN_ARCHIVE_PATH =
   'x-pack/solutions/security/test/fixtures/kbn_archives/timelines/7.15.0_space';
 
+const getErrorStatusCode = (error: unknown): number | undefined =>
+  (error as { response?: { status?: number; statusCode?: number } })?.response?.status ??
+  (error as { response?: { status?: number; statusCode?: number } })?.response?.statusCode;
+
 apiTest.describe(
   'Timeline migrations 8.0 id migration',
   { tag: [...tags.stateful.security] },
@@ -52,7 +56,7 @@ apiTest.describe(
       try {
         await kbnClient.spaces.delete(SPACE_ID);
       } catch (error) {
-        const statusCode = (error as { response?: { statusCode?: number } }).response?.statusCode;
+        const statusCode = getErrorStatusCode(error);
         if (statusCode !== 404) {
           throw error;
         }
@@ -67,7 +71,14 @@ apiTest.describe(
 
     apiTest.afterAll(async ({ kbnClient }) => {
       await kbnClient.importExport.unload(KBN_ARCHIVE_PATH, { space: SPACE_ID });
-      await kbnClient.spaces.delete(SPACE_ID);
+      try {
+        await kbnClient.spaces.delete(SPACE_ID);
+      } catch (error) {
+        const statusCode = getErrorStatusCode(error);
+        if (statusCode !== 404) {
+          throw error;
+        }
+      }
       await scopedEsArchiver.unload(ES_ARCHIVE_PATH);
     });
 
