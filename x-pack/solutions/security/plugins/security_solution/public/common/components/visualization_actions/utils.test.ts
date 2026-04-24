@@ -71,7 +71,9 @@ describe('buildIndexFilters', () => {
 
   test('returns [] when hasAdHocDataViews is true regardless of patterns', () => {
     expect(buildIndexFilters({ hasAdHocDataViews: true, selectedPatterns })).toEqual([]);
-    expect(buildIndexFilters({ hasAdHocDataViews: true, selectedPatterns, overridePatterns })).toEqual([]);
+    expect(
+      buildIndexFilters({ hasAdHocDataViews: true, selectedPatterns, overridePatterns })
+    ).toEqual([]);
   });
 
   test('returns getIndexFilters(selectedPatterns) when no overridePatterns', () => {
@@ -92,7 +94,11 @@ describe('buildIndexFilters', () => {
   });
 
   test('returns negated exclusion filters for removed patterns when overridePatterns is provided', () => {
-    const result = buildIndexFilters({ hasAdHocDataViews: false, selectedPatterns, overridePatterns });
+    const result = buildIndexFilters({
+      hasAdHocDataViews: false,
+      selectedPatterns,
+      overridePatterns,
+    });
     const expected = getIndexFilters(['.alerts-security.alerts-default']).map((f) => ({
       ...f,
       meta: { ...f.meta, negate: true },
@@ -102,7 +108,11 @@ describe('buildIndexFilters', () => {
 
   test('returns [] when overridePatterns equals selectedPatterns (nothing excluded)', () => {
     expect(
-      buildIndexFilters({ hasAdHocDataViews: false, selectedPatterns, overridePatterns: selectedPatterns })
+      buildIndexFilters({
+        hasAdHocDataViews: false,
+        selectedPatterns,
+        overridePatterns: selectedPatterns,
+      })
     ).toEqual([]);
   });
 });
