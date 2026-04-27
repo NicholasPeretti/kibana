@@ -6,9 +6,13 @@
  */
 import { v4 as uuidGen } from 'uuid';
 import Fs from 'fs';
+import Zlib from 'zlib';
+import Path from 'path';
 import Util from 'util';
 import type { ElasticsearchClient } from '@kbn/core/server';
+import type { Client as EsClient } from '@elastic/elasticsearch';
 import deepmerge from 'deepmerge';
+import { REPO_ROOT } from '@kbn/repo-info';
 import { createTestServers, createRootWithCorePlugins } from '@kbn/core-test-helpers-kbn-server';
 
 export const DEFAULT_GET_ROUTES: Array<[RegExp, unknown]> = [
@@ -172,4 +176,74 @@ export function mockAxiosGet(
 
 export function getRandomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+interface ArchiveIndexRecord {
+  type: 'index';
+  value: {
+    index: string;
+    aliases: Record<string, object>;
+    mappings: Record<string, unknown>;
+    settings?: Record<string, unknown>;
+  };
+}
+
+interface ArchiveDocRecord {
+  type: 'doc';
+  value: {
+    id: string;
+    index: string;
+    source: Record<string, unknown>;
+  };
+}
+
+type ArchiveRecord = ArchiveIndexRecord | ArchiveDocRecord;
+
+/**
+ * Seeds an Elasticsearch cluster with data from an EsArchiver-format archive
+ * (mappings.json + data.json.gz). Used to bootstrap legacy saved-object indices
+ * before Kibana starts so the SO migration framework can exercise them.
+ *
+ * @param esClient - ES client connected to the target cluster
+ * @param archivePath - path to the archive directory, relative to repo root
+ */
+export async function seedEsArchive(esClient: EsClient, archivePath: string): Promise<void> {
+  const archiveDir = Path.resolve(REPO_ROOT, archivePath);
+
+  const mappingsJson = Fs.readFileSync(Path.join(archiveDir, 'mappings.json'), 'utf8');
+  const indexRecord: ArchiveIndexRecord = JSON.parse(mappingsJson);
+  const { index, aliases, mappings } = indexRecord.value;
+
+  await esClient.indices.create({
+    index,
+    aliases,
+    mappings: mappings as Parameters<EsClient['indices']['create']>[0]['mappings'],
+    settings: {
+      number_of_shards: 1,
+      number_of_replicas: 0,
+      auto_expand_replicas: 'false',
+    },
+  });
+
+  const compressed = Fs.readFileSync(Path.join(archiveDir, 'data.json.gz'));
+  const content = Zlib.gunzipSync(compressed).toString('utf8');
+
+  const records: ArchiveRecord[] = content
+    .split('\n\n')
+    .map((chunk) => chunk.trim())
+    .filter(Boolean)
+    .map((chunk) => JSON.parse(chunk) as ArchiveRecord);
+
+  const docRecords = records.filter((r): r is ArchiveDocRecord => r.type === 'doc');
+
+  if (docRecords.length === 0) {
+    return;
+  }
+
+  const operations = docRecords.flatMap((doc) => [
+    { index: { _index: doc.value.index, _id: doc.value.id } },
+    doc.value.source,
+  ]);
+
+  await esClient.bulk({ operations, refresh: 'wait_for' });
 }

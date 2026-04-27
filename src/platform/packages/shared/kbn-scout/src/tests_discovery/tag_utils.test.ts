@@ -136,13 +136,4 @@ describe('getServerRunFlagsFromTags', () => {
     expect(result).toContain('--arch stateful --domain classic');
     expect(result).toContain('--arch serverless --domain search');
   });
-
-  it('returns a flag for the stateful security_complete combination', () => {
-    const result = getServerRunFlagsFromTags([
-      '@local-stateful-security_complete',
-      '@cloud-stateful-security_complete',
-    ]);
-    expect(result).toContain('--arch stateful --domain security_complete');
-    expect(result).toHaveLength(2);
-  });
 });

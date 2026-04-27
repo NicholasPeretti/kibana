@@ -295,7 +295,5 @@
     "@kbn/shared-ux-column-presets",
     "@kbn/core-overlays-browser",
     "@kbn/workflows-management-plugin",
-    "@kbn/core-application-browser-mocks",
-    "@kbn/es-archiver",
   ]
 }
