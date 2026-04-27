@@ -10,6 +10,7 @@ import { EuiHorizontalRule } from '@elastic/eui';
 import type { DataTableRecord } from '@kbn/discover-utils';
 import type { CellActionRenderer } from '../../shared/components/cell_actions';
 import { AboutSection } from '../components/about_section';
+import { AISummarySection } from '../components/ai_summary_section';
 import { InsightsSection } from '../components/insights_section';
 import { InvestigationSection } from '../components/investigation_section';
 import { VisualizationsSection } from '../components/visualizations_section';
@@ -45,6 +46,8 @@ export const OverviewTab = memo(({ hit, renderCellActions, onAlertUpdated }: Ove
     />
     <EuiHorizontalRule margin="m" />
     <InsightsSection hit={hit} onAlertUpdated={onAlertUpdated} />
+    <EuiHorizontalRule margin="m" />
+    <AISummarySection hit={hit} />
   </>
 ));
 

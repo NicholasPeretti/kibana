@@ -130,6 +130,12 @@ export const SUMMARY_ROW_TEXT_TEST_ID = (dataTestSubj: string) => `${dataTestSub
 export const SUMMARY_ROW_VALUE_TEST_ID = (dataTestSubj: string) => `${dataTestSubj}Value`;
 export const SUMMARY_ROW_BUTTON_TEST_ID = (dataTestSubj: string) => `${dataTestSubj}Button`;
 
+/* AI summary section */
+
+export const AI_SUMMARY_SECTION_TEST_ID = `${PREFIX}AISummarySection` as const;
+export const AI_SUMMARY_SECTION_HEADER_TEST_ID = `${AI_SUMMARY_SECTION_TEST_ID}Header` as const;
+export const AI_SUMMARY_SECTION_CONTENT_TEST_ID = `${AI_SUMMARY_SECTION_TEST_ID}Content` as const;
+
 /* Footer */
 
 export const FLYOUT_FOOTER_DROPDOWN_BUTTON_TEST_ID = `${PREFIX}FooterDropdownButton` as const;
