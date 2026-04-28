@@ -133,8 +133,6 @@ export const SUMMARY_ROW_BUTTON_TEST_ID = (dataTestSubj: string) => `${dataTestS
 /* AI summary section */
 
 export const AI_SUMMARY_SECTION_TEST_ID = `${PREFIX}AISummarySection` as const;
-export const AI_SUMMARY_SECTION_HEADER_TEST_ID = `${AI_SUMMARY_SECTION_TEST_ID}Header` as const;
-export const AI_SUMMARY_SECTION_CONTENT_TEST_ID = `${AI_SUMMARY_SECTION_TEST_ID}Content` as const;
 
 /* Footer */
 
