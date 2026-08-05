@@ -275,6 +275,7 @@ export const INSPECT_BUTTONS_IN_SECURITY: InspectButtonMetadata[] = [
         title: 'Users Table',
         tab: ALL_USERS_TAB,
         id: ALL_USERS_TABLE,
+        customIndexPattern: '.entities.v2.latest.security',
       },
       {
         title: 'Destination IPs Table',

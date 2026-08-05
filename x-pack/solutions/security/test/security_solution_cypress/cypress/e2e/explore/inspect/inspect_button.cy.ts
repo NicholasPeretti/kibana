@@ -24,11 +24,7 @@ import { mockRiskEngineEnabled } from '../../../tasks/entity_analytics';
 
 const DATA_VIEW = 'auditbeat-*';
 
-// The Users page in this suite is still individually flaky/skipped for reasons tracked by its
-// own issue below. Its root cause has not been verified as fixed, so it stays skipped here.
-// Do not remove this without separately verifying and closing that issue.
-// FLAKY (Users page): https://github.com/elastic/kibana/issues/199583
-const SKIPPED_PAGES = ['Users'];
+const SKIPPED_PAGES: string[] = [];
 
 describe('Inspect Explore pages', { tags: ['@ess', '@serverless'] }, () => {
   beforeEach(() => {
