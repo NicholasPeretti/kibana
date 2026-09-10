@@ -19,11 +19,13 @@ import { getUserPrivilegesMockDefaultValue } from '../../../common/components/us
 import { useLicense } from '../../../common/hooks/use_license';
 import { useGetCurrentUserProfile } from '../../../common/components/user_profiles/use_get_current_user_profile';
 import { useSuggestUsers } from '../../../common/components/user_profiles/use_suggest_users';
+import { useBulkGetUserProfiles } from '../../../common/components/user_profiles/use_bulk_get_user_profiles';
 
 jest.mock('../../../common/components/user_privileges');
 jest.mock('../../../common/hooks/use_license');
 jest.mock('../../../common/components/user_profiles/use_get_current_user_profile');
 jest.mock('../../../common/components/user_profiles/use_suggest_users');
+jest.mock('../../../common/components/user_profiles/use_bulk_get_user_profiles');
 
 const mockUseUserPrivileges = useUserPrivileges as jest.Mock;
 
@@ -48,12 +50,20 @@ const user: UserProfileWithAvatar = {
   data: {},
 };
 
+const noAssignedUserProfiles = { isLoading: false, data: [] };
+const assignedUserProfiles = { isLoading: false, data: [user] };
+
 const dataView: DataView = createStubDataView({ spec: {} });
 
 describe('AlertsPageContent', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     (useLicense as jest.Mock).mockReturnValue({ isPlatinumPlus: () => true });
+    // Must return a stable value per selection: `data` is an effect dependency
+    // in AssigneesSelectable, so a fresh array on each render never settles.
+    (useBulkGetUserProfiles as jest.Mock).mockImplementation(({ uids }: { uids: Set<string> }) =>
+      uids.has(user.uid) ? assignedUserProfiles : noAssignedUserProfiles
+    );
     mockUseUserPrivileges.mockReturnValue(
       getUserPrivilegesMockDefaultValue({
         rulesPrivileges: {
