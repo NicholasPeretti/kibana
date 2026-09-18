@@ -7,7 +7,6 @@
 
 import { fireEvent, render, within } from '@testing-library/react';
 import React from 'react';
-import userEvent from '@testing-library/user-event';
 
 import { TestProviders } from '../../../../common/mock';
 import { CoverageOverviewFiltersPanel } from './filters_panel';
@@ -52,12 +51,16 @@ const renderFiltersPanel = () => {
 };
 
 describe('CoverageOverviewFiltersPanel', () => {
-  test('it correctly populates rule activity filter state', async () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test('it correctly populates rule activity filter state', () => {
     const wrapper = renderFiltersPanel();
 
-    await userEvent.click(wrapper.getByTestId('coverageOverviewRuleActivityFilterButton'));
+    fireEvent.click(wrapper.getByTestId('coverageOverviewRuleActivityFilterButton'));
 
-    await userEvent.click(
+    fireEvent.click(
       within(wrapper.getByTestId('coverageOverviewFilterList')).getByText(
         ruleActivityFilterLabelMap[ruleActivityFilterDefaultOptions[0].label]
       )
@@ -65,12 +68,12 @@ describe('CoverageOverviewFiltersPanel', () => {
     expect(setRuleActivityFilter).toHaveBeenCalledWith([ruleActivityFilterDefaultOptions[0].label]);
   });
 
-  test('it correctly populates rule source filter state', async () => {
+  test('it correctly populates rule source filter state', () => {
     const wrapper = renderFiltersPanel();
 
-    await userEvent.click(wrapper.getByTestId('coverageOverviewRuleSourceFilterButton'));
+    fireEvent.click(wrapper.getByTestId('coverageOverviewRuleSourceFilterButton'));
 
-    await userEvent.click(
+    fireEvent.click(
       within(wrapper.getByTestId('coverageOverviewFilterList')).getByText(
         ruleSourceFilterLabelMap[ruleSourceFilterDefaultOptions[0].label]
       )
@@ -78,7 +81,7 @@ describe('CoverageOverviewFiltersPanel', () => {
     expect(setRuleSourceFilter).toHaveBeenCalledWith([ruleSourceFilterDefaultOptions[0].label]);
   });
 
-  test('it correctly populates search filter state', async () => {
+  test('it correctly populates search filter state', () => {
     const wrapper = renderFiltersPanel();
 
     fireEvent.change(wrapper.getByTestId('coverageOverviewFilterSearchBar'), {
