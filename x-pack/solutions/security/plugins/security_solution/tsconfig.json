@@ -326,5 +326,7 @@
     "@kbn/code-editor",
     "@kbn/code-editor-mock",
     "@kbn/test-es-server",
+    "@kbn/core-user-profile-server-mocks",
+    "@kbn/core-user-profile-server",
   ]
 }
