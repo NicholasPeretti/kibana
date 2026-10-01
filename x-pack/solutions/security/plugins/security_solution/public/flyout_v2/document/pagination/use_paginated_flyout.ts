@@ -29,8 +29,12 @@ const SOFT_RESET: Partial<ScopedPaginationSlice> = {
   flyoutDocumentIndex: null,
   flyoutDocumentId: null,
   flyoutDocumentIndexName: null,
-  isFlyoutDocumentLoading: false,
   hasFlyoutQueryError: false,
+};
+
+const CLEARED_DOCUMENT_IDENTITY: Partial<ScopedPaginationSlice> = {
+  flyoutDocumentId: null,
+  flyoutDocumentIndexName: null,
 };
 
 /**
@@ -49,9 +53,10 @@ const SOFT_RESET: Partial<ScopedPaginationSlice> = {
  * already open:
  * - `openDocumentFlyout` is the *source* entry point (a table row). It starts a fresh
  *   session, replacing anything the user has stacked on top of the flyout.
- * - `openPaginatedFlyout` is the *in-flyout* entry point (the header `EuiPagination`, and
- *   the source's cross-page resolution effect). It swaps the displayed document into the
- *   open overlay.
+ * - `openPaginatedFlyout` is the *in-flyout* entry point (the header `EuiPagination`).
+ *   It swaps the displayed document into the open overlay. When the source does not
+ *   have that row yet, it clears the document id so the flyout waits instead of
+ *   keeping the previous document.
  */
 export const usePaginatedFlyout = ({
   resolveDocument,
@@ -129,9 +134,12 @@ export const usePaginatedFlyout = ({
       const stateUpdate =
         explicitStateUpdate ?? resolveDocumentRef.current?.(documentIndex) ?? null;
 
+      // An unresolved index clears the previous id so the flyout shows its loading
+      // state instead of the document the pager has already left.
       storeRef.current.setState({
         flyoutDocumentIndex: documentIndex,
-        ...(stateUpdate ?? {}),
+        hasFlyoutQueryError: false,
+        ...(stateUpdate ?? CLEARED_DOCUMENT_IDENTITY),
       });
 
       if (v2OverlayRef.current) return;

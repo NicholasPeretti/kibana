@@ -118,7 +118,6 @@ describe('usePaginatedFlyout', () => {
     expect(result.current.slice.flyoutDocumentIndex).toBeNull();
     expect(result.current.slice.flyoutDocumentId).toBeNull();
     expect(result.current.slice.flyoutDocumentIndexName).toBeNull();
-    expect(result.current.slice.isFlyoutDocumentLoading).toBe(false);
     // totalDocumentCount is source-level state and survives the soft-reset
     expect(result.current.slice.totalDocumentCount).toBe(10);
     // openDocumentFlyoutImpl is still registered (set by the useEffect)

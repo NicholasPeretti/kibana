@@ -205,12 +205,10 @@ export const TimelineDataTableComponent: React.FC<DataTableProps> = memo(
       [refetch, timelineCellActionRenderer]
     );
 
-    // Resolves the identity of the document at an absolute row index (0-based
-    // across the full result set) from the currently-loaded rows. Returns null
-    // when the row is not in memory — the parallel cross-page query will resolve
-    // it and call openPaginatedFlyout again once the data is available. The
-    // flyout fetches the document itself from `_id`/`_index`, as it did before
-    // pagination was introduced.
+    // Resolves the identity of the document at an absolute row index from the
+    // rows Timeline currently has loaded. The pager's count is that loaded set,
+    // so an index outside it is not reachable. The flyout fetches the document
+    // itself from `_id`/`_index`.
     const resolveDocument = useCallback(
       (documentIndex: number) => {
         const targetRow = tableRows[documentIndex];
